@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ExportableFileTemplateSettings">
+    <internal_templates>
+      <template name="Groovy Annotation.groovy" reformat="true" live-template-enabled="true" enabled="true" />
+      <template name="Groovy Class.groovy" reformat="true" live-template-enabled="true" enabled="true" />
+      <template name="Groovy DSL Script.gdsl" reformat="true" live-template-enabled="true" enabled="true" />
+      <template name="Groovy Enum.groovy" reformat="true" live-template-enabled="true" enabled="true" />
+      <template name="Groovy Interface.groovy" reformat="true" live-template-enabled="true" enabled="true" />
+      <template name="Groovy Script.groovy" reformat="true" live-template-enabled="true" enabled="true" />
+      <template name="Groovy Trait.groovy" reformat="true" live-template-enabled="true" enabled="true" />
+    </internal_templates>
+  </component>
+</project>
