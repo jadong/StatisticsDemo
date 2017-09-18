@@ -5,6 +5,8 @@
       <module fileurl="file://$PROJECT_DIR$/StatisticsDemo.iml" filepath="$PROJECT_DIR$/StatisticsDemo.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/statisticsplugin/statisticsplugin.iml" filepath="$PROJECT_DIR$/statisticsplugin/statisticsplugin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tracker/tracker.iml" filepath="$PROJECT_DIR$/tracker/tracker.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tracker-annotation/tracker-annotation.iml" filepath="$PROJECT_DIR$/tracker-annotation/tracker-annotation.iml" />
     </modules>
   </component>
 </project>

@@ -28,6 +28,7 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         btn_go = (Button) findViewById(R.id.btn_go);
 
         initData(1000);
@@ -43,7 +44,6 @@ public class MainActivity extends BaseActivity {
             }
         });
     }
-
     @SaFlag(eventId = "AA",dataId = 11)
     public void initData(int count) {
         for (int i = 0; i < count; i++) {
@@ -51,7 +51,6 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    @SaFlag(eventId = "BB",dataId = 22)
     public void initData2(int count) {
         for (int i = 0; i < count; i++) {
             list2.add("--" + i);
