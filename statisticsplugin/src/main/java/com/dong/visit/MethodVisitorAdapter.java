@@ -1,5 +1,6 @@
 package com.dong.visit;
 
+import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
@@ -19,10 +20,13 @@ public class MethodVisitorAdapter extends AdviceAdapter {
 
     private boolean isFlag = false;
     private String methodName;
+    private MethodEntity methodEntity = new MethodEntity();
+    private FieldEntity fieldEntity;
 
-    protected MethodVisitorAdapter(String methodName, MethodVisitor methodVisitor, int access, String name, String desc) {
+    protected MethodVisitorAdapter(String methodName, FieldEntity fieldEntity, MethodVisitor methodVisitor, int access, String name, String desc) {
         super(Opcodes.ASM5, methodVisitor, access, name, desc);
         this.methodName = methodName;
+        this.fieldEntity = fieldEntity;
     }
 
     private boolean isFlag() {
@@ -44,12 +48,17 @@ public class MethodVisitorAdapter extends AdviceAdapter {
      * 我们可以在这个方法判断是否是我们注解做一些事情，比如重置一个标志位；
      */
     @Override
-    public org.objectweb.asm.AnnotationVisitor visitAnnotation(String desc, boolean visible) {
+    public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
+        AnnotationVisitor annotationVisitor = super.visitAnnotation(desc, visible);
+
         if (Type.getDescriptor(SaFlag.class).equals(desc)) {
             isFlag = true;
+            if (annotationVisitor != null) {
+                annotationVisitor = new AnnotationVisitorAdapter(methodEntity, annotationVisitor);
+            }
         }
 
-        return super.visitAnnotation(desc, visible);
+        return annotationVisitor;
     }
 
     /**
@@ -58,6 +67,7 @@ public class MethodVisitorAdapter extends AdviceAdapter {
     @Override
     protected void onMethodEnter() {
         if (isFlag()) {
+
             mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
             mv.visitLdcInsn("========start=========" + methodName);
             mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println",

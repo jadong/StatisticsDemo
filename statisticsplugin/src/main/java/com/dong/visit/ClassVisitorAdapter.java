@@ -12,8 +12,8 @@ import org.objectweb.asm.Opcodes;
  */
 public class ClassVisitorAdapter extends ClassVisitor {
 
-    private String targetClassFullName;
-    private ParamsEntity paramsEntity = new ParamsEntity();
+    private String classFullName;
+    private FieldEntity fieldEntity = new FieldEntity();
 
     public ClassVisitorAdapter(ClassVisitor classVisitor) {
         super(Opcodes.ASM5, classVisitor);
@@ -23,7 +23,7 @@ public class ClassVisitorAdapter extends ClassVisitor {
     public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
         super.visit(version, access, name, signature, superName, interfaces);
         System.out.println("ClassVisitor--visit---" + name);
-        targetClassFullName = name.replaceAll("/", ".");
+        classFullName = name.replaceAll("/", ".");
     }
 
     @Override
@@ -37,16 +37,18 @@ public class ClassVisitorAdapter extends ClassVisitor {
         System.out.println("ClassVisitor--visitField--" + fieldName + "---" + s1 + "--" + s2 + "--" + o);
         FieldVisitor fieldVisitor = super.visitField(i, fieldName, s1, s2, o);
         if (fieldVisitor != null) {
-            fieldVisitor = new FieldVisitorAdapter(fieldName,paramsEntity,fieldVisitor);
+            fieldVisitor = new FieldVisitorAdapter(fieldName, fieldEntity, fieldVisitor);
         }
+
         return fieldVisitor;
     }
 
     @Override
     public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
+        System.out.println("ClassVisitor--visitMethod--" + name + "---" + desc);
         MethodVisitor methodVisitor = cv.visitMethod(access, name, desc, signature, exceptions);
         //自定义方法访问者
-        methodVisitor = new MethodVisitorAdapter(name, methodVisitor, access, name, desc);
+        methodVisitor = new MethodVisitorAdapter(name, fieldEntity, methodVisitor, access, name, desc);
         return methodVisitor;
     }
 

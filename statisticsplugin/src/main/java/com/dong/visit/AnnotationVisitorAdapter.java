@@ -9,18 +9,35 @@ import org.objectweb.asm.Opcodes;
  */
 public class AnnotationVisitorAdapter extends AnnotationVisitor {
 
-    private ParamsEntity.DataField dataField;
+    private FieldEntity.DataField dataField;
+    private MethodEntity methodEntity;
 
-    public AnnotationVisitorAdapter(ParamsEntity.DataField dataField, AnnotationVisitor annotationVisitor) {
+    public AnnotationVisitorAdapter(FieldEntity.DataField dataField, AnnotationVisitor annotationVisitor) {
         super(Opcodes.ASM5, annotationVisitor);
         this.dataField = dataField;
     }
 
+    public AnnotationVisitorAdapter(MethodEntity methodEntity, AnnotationVisitor annotationVisitor) {
+        super(Opcodes.ASM5, annotationVisitor);
+        this.methodEntity = methodEntity;
+    }
+
     @Override
     public void visit(String name, Object value) {
-        if (dataField != null) {//@SaParams
-            dataField.setDataId((String[]) value);
+        if (dataField != null && name.equals("value")) {//@SaParams
+            if (value instanceof int[]) {
+                dataField.setDataId((int[]) value);
+            }
         }
+
+        if (methodEntity != null) {
+            if (name.equals("dataId")) {
+                methodEntity.setDataId((int) value);
+            } else if (name.equals("eventId")) {
+                methodEntity.setEventId(value.toString());
+            }
+        }
+
         super.visit(name, value);
     }
 }

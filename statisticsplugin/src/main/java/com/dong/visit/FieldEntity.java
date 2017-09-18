@@ -6,9 +6,7 @@ import java.util.List;
 /**
  * Created by dong on 2017/9/18.
  */
-public class ParamsEntity {
-
-    private boolean isHave = false;
+public class FieldEntity {
 
     private List<DataField> dataFields = new ArrayList<>();
 
@@ -16,20 +14,20 @@ public class ParamsEntity {
         dataFields.add(dataField);
     }
 
-    public boolean isHave() {
+    public boolean isHaveData() {
         return dataFields.size() > 0;
     }
 
     public static class DataField {
 
-        private String[] dataId;
+        private int[] dataId;
         private String dataName;
 
-        public String[] getDataId() {
+        public int[] getDataId() {
             return dataId;
         }
 
-        public void setDataId(String[] dataId) {
+        public void setDataId(int[] dataId) {
             this.dataId = dataId;
         }
 
