@@ -3,7 +3,11 @@ package com.dong.plugin
 import com.android.build.api.transform.*
 import com.android.build.gradle.AppExtension
 import com.android.build.gradle.internal.pipeline.TransformManager
+<<<<<<< HEAD
 import com.dong.visit.SaFlagMethodClassVisitor
+=======
+import com.dong.visit.ClassVisitorAdapter
+>>>>>>> 638a779bfaa050f61283e272dea2bcd76e9750e5
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.objectweb.asm.ClassReader
@@ -64,20 +68,32 @@ public class SAPlugin extends Transform implements Plugin<Project> {
                         directoryInput.file.eachFileRecurse {
                             File file ->
                                 def name = file.name
+<<<<<<< HEAD
                                 //这里进行我们的处理 TODO
+=======
+>>>>>>> 638a779bfaa050f61283e272dea2bcd76e9750e5
                                 if (name.endsWith(".class") && !name.startsWith("R\$") &&
                                         "R.class" != name && "BuildConfig.class" != name) {
                                     ClassReader classReader = new ClassReader(file.bytes)
                                     ClassWriter classWriter = new ClassWriter(classReader, ClassWriter.COMPUTE_MAXS)
+<<<<<<< HEAD
                                     ClassVisitor cv = new SaFlagMethodClassVisitor(classWriter)
+=======
+                                    ClassVisitor cv = new ClassVisitorAdapter(classWriter)
+>>>>>>> 638a779bfaa050f61283e272dea2bcd76e9750e5
                                     classReader.accept(cv, ClassReader.EXPAND_FRAMES)
                                     byte[] code = classWriter.toByteArray()
                                     FileOutputStream fos = new FileOutputStream(
                                             file.parentFile.absolutePath + File.separator + name)
                                     fos.write(code)
                                     fos.close()
+<<<<<<< HEAD
                                 }
                                 println '//SAPlugin find file:' + file.getAbsolutePath()
+=======
+                                    println '//SAPlugin processed file:' + file.getAbsolutePath()
+                                }
+>>>>>>> 638a779bfaa050f61283e272dea2bcd76e9750e5
                         }
                     }
                     //处理完输入文件之后，要把输出给下一个任务
