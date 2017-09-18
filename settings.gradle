@@ -1,1 +1,1 @@
-include ':app', ':statisticsplugin'
+include ':app', ':statisticsplugin', ':tracker', ':tracker-annotation'

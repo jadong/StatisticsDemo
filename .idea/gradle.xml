@@ -10,6 +10,8 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/statisticsplugin" />
+            <option value="$PROJECT_DIR$/tracker" />
+            <option value="$PROJECT_DIR$/tracker-annotation" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
