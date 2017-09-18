@@ -3,7 +3,7 @@ package com.dong.plugin
 import com.android.build.api.transform.*
 import com.android.build.gradle.AppExtension
 import com.android.build.gradle.internal.pipeline.TransformManager
-import com.dong.visit.SaFlagMethodClassVisitor
+import com.dong.visit.ClassVisitorAdapter
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.objectweb.asm.ClassReader
@@ -64,20 +64,19 @@ public class SAPlugin extends Transform implements Plugin<Project> {
                         directoryInput.file.eachFileRecurse {
                             File file ->
                                 def name = file.name
-                                //这里进行我们的处理 TODO
                                 if (name.endsWith(".class") && !name.startsWith("R\$") &&
                                         "R.class" != name && "BuildConfig.class" != name) {
                                     ClassReader classReader = new ClassReader(file.bytes)
                                     ClassWriter classWriter = new ClassWriter(classReader, ClassWriter.COMPUTE_MAXS)
-                                    ClassVisitor cv = new SaFlagMethodClassVisitor(classWriter)
+                                    ClassVisitor cv = new ClassVisitorAdapter(classWriter)
                                     classReader.accept(cv, ClassReader.EXPAND_FRAMES)
                                     byte[] code = classWriter.toByteArray()
                                     FileOutputStream fos = new FileOutputStream(
                                             file.parentFile.absolutePath + File.separator + name)
                                     fos.write(code)
                                     fos.close()
+                                    println '//SAPlugin processed file:' + file.getAbsolutePath()
                                 }
-                                println '//SAPlugin find file:' + file.getAbsolutePath()
                         }
                     }
                     //处理完输入文件之后，要把输出给下一个任务

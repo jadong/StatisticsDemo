@@ -1,12 +1,9 @@
 package com.dong.visit;
 
-import org.objectweb.asm.AnnotationVisitor;
-import org.objectweb.asm.Attribute;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
-import org.objectweb.asm.TypePath;
 import org.objectweb.asm.commons.AdviceAdapter;
 
 /**
@@ -18,12 +15,12 @@ import org.objectweb.asm.commons.AdviceAdapter;
  * <p>
  * Created by dong on 2017/9/14.
  */
-public class CustomAdviceAdapter extends AdviceAdapter {
+public class MethodVisitorAdapter extends AdviceAdapter {
 
     private boolean isFlag = false;
     private String methodName;
 
-    protected CustomAdviceAdapter(String methodName, MethodVisitor methodVisitor, int access, String name, String desc) {
+    protected MethodVisitorAdapter(String methodName, MethodVisitor methodVisitor, int access, String name, String desc) {
         super(Opcodes.ASM5, methodVisitor, access, name, desc);
         this.methodName = methodName;
     }
@@ -40,9 +37,6 @@ public class CustomAdviceAdapter extends AdviceAdapter {
     @Override
     public void visitLocalVariable(String name, String desc, String signature, Label start, Label end, int index) {
         super.visitLocalVariable(name, desc, signature, start, end, index);
-        if (isFlag()) {
-            System.out.println("===visitLocalVariable: " + name + "," + desc + ",methodName:" + methodName);
-        }
     }
 
     /**
@@ -56,30 +50,6 @@ public class CustomAdviceAdapter extends AdviceAdapter {
         }
 
         return super.visitAnnotation(desc, visible);
-    }
-
-    @Override
-    public void visitParameter(String s, int i) {
-        System.out.println("===visitParameter--" + s + "---" + i);
-        super.visitParameter(s, i);
-    }
-
-    @Override
-    public AnnotationVisitor visitInsnAnnotation(int i, TypePath typePath, String s, boolean b) {
-        System.out.println("===visitInsnAnnotation--" + i + "--" + typePath.toString() + "---" + s + "---b");
-        return super.visitInsnAnnotation(i, typePath, s, b);
-    }
-
-    @Override
-    public AnnotationVisitor visitParameterAnnotation(int i, String s, boolean b) {
-        System.out.println("===visitParameterAnnotation--" + i + "---" + s + "---" + b);
-        return super.visitParameterAnnotation(i, s, b);
-    }
-
-    @Override
-    public void visitAttribute(Attribute attribute) {
-        System.out.println("===visitAttribute---" + attribute.type);
-        super.visitAttribute(attribute);
     }
 
     /**

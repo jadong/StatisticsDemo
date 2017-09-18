@@ -8,4 +8,8 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.METHOD)
 public @interface SaFlag {
+
+    String eventId() default "";
+
+    int dataId() default 0;
 }
