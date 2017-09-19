@@ -2,11 +2,9 @@ package com.dong.visit;
 
 import com.dong.visit.log.LogUtils;
 import com.jumei.tracker.annotation.PointClick;
-import com.jumei.tracker.annotation.PointParams;
 import com.jumei.tracker.annotation.PointView;
 
 import org.objectweb.asm.AnnotationVisitor;
-import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
