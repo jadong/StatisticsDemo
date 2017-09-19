@@ -3,14 +3,13 @@ buildscript {
 
     repositories {
         jcenter()
-//        maven { url uri('/Users/dong/mavenRepositories') }
-        maven { url uri('/Users/kayo/maven') }
+        maven { url uri('/Users/dong/mavenRepositories') }
+//        maven { url uri('/Users/kayo/maven') }
 
     }
 
     dependencies {
         classpath 'com.android.tools.build:gradle:2.3.3'
-
         classpath 'com.dong.plugin:statisticsplugin:1.0.1'
 
     }
@@ -19,7 +18,8 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
-        maven { url uri('/Users/kayo/maven') }
+//        maven { url uri('/Users/kayo/maven') }
+        maven { url uri('/Users/dong/mavenRepositories') }
     }
 }
 

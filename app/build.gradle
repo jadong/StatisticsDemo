@@ -33,7 +33,6 @@ dependencies {
     compile "com.android.support:support-v4:$support_version"
     compile "com.android.support:appcompat-v7:$support_version"
     compile project(':tracker')
-//    compile project(':tracker-annotation')
     compile 'com.jumei.tracker:tracker-annotation:1.0.0'
 
 }

@@ -23,4 +23,12 @@ public class ViewEntity {
     public void setEventId(String eventId) {
         this.eventId = eventId;
     }
+
+    @Override
+    public String toString() {
+        return "ViewEntity{" +
+                "dataId=" + dataId +
+                ", eventId='" + eventId + '\'' +
+                '}';
+    }
 }

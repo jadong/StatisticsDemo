@@ -1,34 +1,67 @@
 package com.dong.visit;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by dong on 2017/9/18.
  */
 public class FieldEntity {
 
-    private List<DataField> dataFields = new ArrayList<>();
+    private String classFullName;
+    private Map<Integer, DataField> dataFields = new HashMap<>();
 
-    public void addDataField(DataField dataField) {
-        dataFields.add(dataField);
+    public String getClassFullName() {
+        return classFullName;
     }
 
-    public boolean isHaveData() {
-        return dataFields.size() > 0;
+    public void setClassFullName(String classFullName) {
+        this.classFullName = classFullName;
+    }
+
+    public void addDataField(DataField dataField) {
+        if (dataField == null || dataField.getDataIds() == null) {
+            return;
+        }
+        int[] dataId = dataField.getDataIds();
+        for (int i = 0; i < dataId.length; i++) {
+            dataFields.put(dataId[i], dataField);
+        }
+    }
+
+    public DataField getDataField(int dataId) {
+        return dataFields.get(dataId);
+    }
+
+    @Override
+    public String toString() {
+        return "FieldEntity{" +
+                "classFullName='" + classFullName + '\'' +
+                ", dataFields=" + dataFields +
+                '}';
     }
 
     public static class DataField {
 
-        private int[] dataId;
+        private int[] dataIds;
         private String dataName;
+        private String dataType;
 
-        public int[] getDataId() {
-            return dataId;
+        public String getDataType() {
+            return dataType;
         }
 
-        public void setDataId(int[] dataId) {
-            this.dataId = dataId;
+        public void setDataType(String dataType) {
+            this.dataType = dataType;
+        }
+
+        public int[] getDataIds() {
+            return dataIds;
+        }
+
+        public void setDataIds(int[] dataIds) {
+            this.dataIds = dataIds;
         }
 
         public String getDataName() {
@@ -37,6 +70,15 @@ public class FieldEntity {
 
         public void setDataName(String dataName) {
             this.dataName = dataName;
+        }
+
+        @Override
+        public String toString() {
+            return "DataField{" +
+                    "dataIds=" + Arrays.toString(dataIds) +
+                    ", dataName='" + dataName + '\'' +
+                    ", dataType='" + dataType + '\'' +
+                    '}';
         }
     }
 }

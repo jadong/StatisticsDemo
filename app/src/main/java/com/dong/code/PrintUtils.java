@@ -27,4 +27,10 @@ public class PrintUtils {
         System.out.println("print-params [" + methodName + "]:\n" + stringBuilder.toString());
     }
 
+    public static void main (String[] args) throws java.lang.Exception {
+        System.out.println(String.class.getCanonicalName());
+        System.out.println(String.class.getName());
+
+    }
+
 }

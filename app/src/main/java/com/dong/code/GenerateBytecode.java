@@ -1,14 +1,18 @@
 package com.dong.code;
 
-import java.util.Map;
+import com.jumei.analysis.Tracker;
 
 /**
  * Created by dong on 2017/9/14.
  */
 public class GenerateBytecode {
 
-    public void code(String methodName, Map<String, Object> params) {
-        PrintUtils.printParams(methodName, params);
+    private Object object;
+
+    public void code() {
+        String eventId = "EEEE";
+        String className = "CCCC";
+        Tracker.onClick(eventId, className, object);
     }
 
 }

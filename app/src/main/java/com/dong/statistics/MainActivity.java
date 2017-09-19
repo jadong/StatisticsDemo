@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.jumei.tracker.annotation.PointArg;
-import com.jumei.tracker.annotation.PointClick;
+import com.jumei.tracker.annotation.PointParams;
 import com.jumei.tracker.annotation.PointView;
 
 import java.util.ArrayList;
@@ -41,7 +41,7 @@ public class MainActivity extends BaseActivity {
 
         btn_go.setOnClickListener(new View.OnClickListener() {
 
-            @PointClick(eventId = "CC", dataId = 11)
+            @PointParams(eventId = "AAAA",paramsName = "params",paramsType = "java.lang.String",classFullName = "com.dong.statistics.MainActivity")
             @Override
             public void onClick(View v) {
                 System.out.println("点击btn_go-----");

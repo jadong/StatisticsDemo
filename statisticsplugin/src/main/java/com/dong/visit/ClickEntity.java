@@ -23,4 +23,12 @@ public class ClickEntity {
     public void setEventId(String eventId) {
         this.eventId = eventId;
     }
+
+    @Override
+    public String toString() {
+        return "ClickEntity{" +
+                "dataId=" + dataId +
+                ", eventId='" + eventId + '\'' +
+                '}';
+    }
 }
