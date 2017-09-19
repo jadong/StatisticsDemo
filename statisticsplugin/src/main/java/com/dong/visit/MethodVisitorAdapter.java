@@ -66,13 +66,14 @@ public class MethodVisitorAdapter extends AdviceAdapter {
                 viewEntity = new ViewEntity();
                 annotationVisitor = new AnnotationVisitorAdapter(viewEntity, annotationVisitor);
             }
-        } else if (Type.getDescriptor(PointParams.class).equals(desc)) {
-            isParams = true;
-            if (annotationVisitor != null) {
-                paramsEntity = new ParamsEntity();
-                annotationVisitor = new AnnotationVisitorAdapter(paramsEntity, annotationVisitor);
-            }
         }
+//        else if (Type.getDescriptor(PointParams.class).equals(desc)) {
+//            isParams = true;
+//            if (annotationVisitor != null) {
+//                paramsEntity = new ParamsEntity();
+//                annotationVisitor = new AnnotationVisitorAdapter(paramsEntity, annotationVisitor);
+//            }
+//        }
 
         return annotationVisitor;
     }
