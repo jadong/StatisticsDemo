@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-//apply plugin: 'statisticsplugin'
+apply plugin: 'statisticsplugin'
 
 
 android {
@@ -33,5 +33,5 @@ dependencies {
     compile "com.android.support:support-v4:$support_version"
     compile "com.android.support:appcompat-v7:$support_version"
     compile project(':tracker')
-
+    compile project(':tracker-annotation')
 }

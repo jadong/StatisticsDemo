@@ -1,5 +1,7 @@
 package com.dong.visit;
 
+import com.jumei.tracker.annotation.PointArg;
+
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.Opcodes;
@@ -24,7 +26,7 @@ public class FieldVisitorAdapter extends FieldVisitor {
     @Override
     public AnnotationVisitor visitAnnotation(String desc, boolean b) {
         AnnotationVisitor annotationVisitor = super.visitAnnotation(desc, b);
-        if (Type.getDescriptor(SaParams.class).equals(desc)) {
+        if (Type.getDescriptor(PointArg.class).equals(desc)) {
             dataField = new FieldEntity.DataField();
             dataField.setDataName(filedName);
             if (annotationVisitor != null) {

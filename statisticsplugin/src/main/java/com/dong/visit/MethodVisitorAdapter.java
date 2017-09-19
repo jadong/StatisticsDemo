@@ -1,5 +1,8 @@
 package com.dong.visit;
 
+import com.jumei.tracker.annotation.PointClick;
+import com.jumei.tracker.annotation.PointView;
+
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
@@ -20,7 +23,8 @@ public class MethodVisitorAdapter extends AdviceAdapter {
 
     private boolean isFlag = false;
     private String methodName;
-    private MethodEntity methodEntity = new MethodEntity();
+    private ClickEntity clickEntity;
+    private ViewEntity viewEntity;
     private FieldEntity fieldEntity;
 
     protected MethodVisitorAdapter(String methodName, FieldEntity fieldEntity, MethodVisitor methodVisitor, int access, String name, String desc) {
@@ -51,10 +55,17 @@ public class MethodVisitorAdapter extends AdviceAdapter {
     public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
         AnnotationVisitor annotationVisitor = super.visitAnnotation(desc, visible);
 
-        if (Type.getDescriptor(SaFlag.class).equals(desc)) {
+        if (Type.getDescriptor(PointClick.class).equals(desc)) {
             isFlag = true;
             if (annotationVisitor != null) {
-                annotationVisitor = new AnnotationVisitorAdapter(methodEntity, annotationVisitor);
+                clickEntity = new ClickEntity();
+                annotationVisitor = new AnnotationVisitorAdapter(clickEntity, annotationVisitor);
+            }
+        } else if (Type.getDescriptor(PointView.class).equals(desc)) {
+            isFlag = true;
+            if (annotationVisitor != null) {
+                viewEntity = new ViewEntity();
+                annotationVisitor = new AnnotationVisitorAdapter(viewEntity, annotationVisitor);
             }
         }
 

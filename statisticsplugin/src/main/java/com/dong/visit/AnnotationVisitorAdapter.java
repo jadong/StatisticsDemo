@@ -10,31 +10,47 @@ import org.objectweb.asm.Opcodes;
 public class AnnotationVisitorAdapter extends AnnotationVisitor {
 
     private FieldEntity.DataField dataField;
-    private MethodEntity methodEntity;
+    private ClickEntity clickEntity;
+    private ViewEntity viewEntity;
 
     public AnnotationVisitorAdapter(FieldEntity.DataField dataField, AnnotationVisitor annotationVisitor) {
         super(Opcodes.ASM5, annotationVisitor);
         this.dataField = dataField;
     }
 
-    public AnnotationVisitorAdapter(MethodEntity methodEntity, AnnotationVisitor annotationVisitor) {
+    public AnnotationVisitorAdapter(ClickEntity clickEntity, AnnotationVisitor annotationVisitor) {
         super(Opcodes.ASM5, annotationVisitor);
-        this.methodEntity = methodEntity;
+        this.clickEntity = clickEntity;
+    }
+
+    public AnnotationVisitorAdapter(ViewEntity viewEntity, AnnotationVisitor annotationVisitor) {
+        super(Opcodes.ASM5, annotationVisitor);
+        this.viewEntity = viewEntity;
     }
 
     @Override
     public void visit(String name, Object value) {
-        if (dataField != null && name.equals("value")) {//@SaParams
+        if (dataField != null && name.equals("value")) {//@PointArg
             if (value instanceof int[]) {
                 dataField.setDataId((int[]) value);
             }
         }
 
-        if (methodEntity != null) {
+        //@PointClick
+        if (clickEntity != null) {
             if (name.equals("dataId")) {
-                methodEntity.setDataId((int) value);
+                clickEntity.setDataId((int) value);
             } else if (name.equals("eventId")) {
-                methodEntity.setEventId(value.toString());
+                clickEntity.setEventId(value.toString());
+            }
+        }
+
+        //@PointView
+        if (viewEntity != null) {
+            if (name.equals("dataId")) {
+                viewEntity.setDataId((int) value);
+            } else if (name.equals("eventId")) {
+                viewEntity.setEventId(value.toString());
             }
         }
 

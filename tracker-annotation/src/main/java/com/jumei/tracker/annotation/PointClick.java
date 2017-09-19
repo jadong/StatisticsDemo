@@ -22,5 +22,5 @@ public @interface PointClick {
      * 指向 @PointArg 注解的dataId
      * @return
      */
-    String dataId() default "";
+    int dataId() default 0;
 }
