@@ -2,6 +2,7 @@ package com.dong.statistics.app;
 
 import android.app.Application;
 
+import com.jumei.analysis.BuildConfig;
 import com.jumei.analysis.Tracker;
 
 import java.util.HashMap;
