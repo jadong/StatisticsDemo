@@ -29,7 +29,8 @@ public class PrintUtils {
 
     public static void main (String[] args) throws java.lang.Exception {
         System.out.println(String.class.getCanonicalName());
-        System.out.println(String.class.getName());
+        System.out.println(Object.class.getName());
+        System.out.println(Object.class.getClass().getName());
 
     }
 

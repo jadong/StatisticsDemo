@@ -31,6 +31,12 @@ public class ClassVisitorAdapter extends ClassVisitor {
     }
 
     @Override
+    public void visitInnerClass(String s, String s1, String s2, int i) {
+        super.visitInnerClass(s, s1, s2, i);
+        LogUtils.println(TAG, "--visitInnerClass--" + s);
+    }
+
+    @Override
     public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
         LogUtils.println(TAG, "--visitAnnotation--" + desc);
         return super.visitAnnotation(desc, visible);
@@ -49,7 +55,7 @@ public class ClassVisitorAdapter extends ClassVisitor {
 
     @Override
     public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
-        LogUtils.println(TAG,"--visitMethod--" + name + "---" + desc);
+        LogUtils.println(TAG, "--visitMethod--" + name + "---" + desc);
         MethodVisitor methodVisitor = cv.visitMethod(access, name, desc, signature, exceptions);
         //自定义方法访问者
         methodVisitor = new MethodVisitorAdapter(name, fieldEntity, methodVisitor, access, name, desc);
@@ -59,6 +65,6 @@ public class ClassVisitorAdapter extends ClassVisitor {
     @Override
     public void visitEnd() {
         super.visitEnd();
-        LogUtils.println(TAG,"--visitEnd--");
+        LogUtils.println(TAG, "--visitEnd--");
     }
 }

@@ -1,11 +1,13 @@
 package com.dong.visit;
 
+import org.objectweb.asm.Type;
+
 /**
  * Created by dong on 2017/9/19.
  */
 public class ParamsEntity {
 
-   private String eventId;
+    private String eventId;
 
     private String paramsName;
 
@@ -34,7 +36,12 @@ public class ParamsEntity {
     }
 
     public void setParamsType(String paramsType) {
-        this.paramsType = paramsType;
+        try {
+            this.paramsType = Type.getDescriptor(Class.forName(paramsType));
+        } catch (ClassNotFoundException e) {
+            this.paramsType = "Ljava/lang/String;";
+            e.printStackTrace();
+        }
     }
 
     public String getClassFullName() {
@@ -42,7 +49,7 @@ public class ParamsEntity {
     }
 
     public void setClassFullName(String classFullName) {
-        this.classFullName = classFullName;
+        this.classFullName = classFullName.replaceAll("\\.", "/");
     }
 
     @Override

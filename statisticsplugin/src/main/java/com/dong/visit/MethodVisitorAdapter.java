@@ -2,6 +2,7 @@ package com.dong.visit;
 
 import com.dong.visit.log.LogUtils;
 import com.jumei.tracker.annotation.PointClick;
+import com.jumei.tracker.annotation.PointParams;
 import com.jumei.tracker.annotation.PointView;
 
 import org.objectweb.asm.AnnotationVisitor;
@@ -64,14 +65,13 @@ public class MethodVisitorAdapter extends AdviceAdapter {
                 viewEntity = new ViewEntity();
                 annotationVisitor = new AnnotationVisitorAdapter(viewEntity, annotationVisitor);
             }
+        } else if (Type.getDescriptor(PointParams.class).equals(desc)) {
+            isParams = true;
+            if (annotationVisitor != null) {
+                paramsEntity = new ParamsEntity();
+                annotationVisitor = new AnnotationVisitorAdapter(paramsEntity, annotationVisitor);
+            }
         }
-//        else if (Type.getDescriptor(PointParams.class).equals(desc)) {
-//            isParams = true;
-//            if (annotationVisitor != null) {
-//                paramsEntity = new ParamsEntity();
-//                annotationVisitor = new AnnotationVisitorAdapter(paramsEntity, annotationVisitor);
-//            }
-//        }
 
         return annotationVisitor;
     }
@@ -83,6 +83,8 @@ public class MethodVisitorAdapter extends AdviceAdapter {
     protected void onMethodEnter() {
         LogUtils.println(TAG, "---onMethodEnter---");
         if (isView && viewEntity != null && fieldEntity != null) {
+            //记录方法开始时间
+            printStartTime();
 
             LogUtils.println(TAG, "=====onMethodEnter====浏览事件===viewEntity=" + viewEntity + "==fieldEntity=" + fieldEntity);
 
@@ -101,8 +103,6 @@ public class MethodVisitorAdapter extends AdviceAdapter {
             mv.visitFieldInsn(GETFIELD, fieldEntity.getClassFullName(), dataField.getDataName(), dataField.getDataType());
             mv.visitMethodInsn(INVOKESTATIC, "com/jumei/analysis/Tracker", "onView", "(Ljava/lang/String;Ljava/lang/String;" + dataField.getDataType() + ")V", false);
 
-            //记录方法开始时间
-            printStartTime();
 
         } else if (isParams && paramsEntity != null) {
 

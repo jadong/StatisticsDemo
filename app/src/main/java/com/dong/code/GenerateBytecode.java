@@ -10,9 +10,11 @@ public class GenerateBytecode {
     private Object object;
 
     public void code() {
+
         String eventId = "EEEE";
         String className = "CCCC";
-        Tracker.onClick(eventId, className, object);
+        Tracker.onClick(eventId, className, GenerateBytecode.this.object);
+
     }
 
 }
