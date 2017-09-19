@@ -1,13 +1,10 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-
 buildscript {
     ext.support_version = '25.+'
 
     repositories {
         jcenter()
-        maven {
-            url uri('/Users/dong/mavenRepositories')
-        }
+//        maven { url uri('/Users/dong/mavenRepositories') }
+        maven { url uri('/Users/kayo/maven') }
 
     }
 
@@ -22,6 +19,7 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        maven { url uri('/Users/kayo/maven') }
     }
 }
 

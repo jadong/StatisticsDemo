@@ -1,5 +1,5 @@
 apply plugin: 'java-library'
-
+apply plugin: 'maven'
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
@@ -7,3 +7,18 @@ dependencies {
 
 sourceCompatibility = "1.7"
 targetCompatibility = "1.7"
+
+//发送本地库
+uploadArchives{
+    repositories.mavenDeployer{
+        // 本地仓库路径
+//        repository(url: uri('/Users/dong/mavenRepositories'))
+        repository(url: uri('/Users/kayo/maven'))
+        // 唯一标识
+        pom.groupId = "com.jumei.tracker"
+        // 项目名称
+        pom.artifactId = "tracker-annotation"
+        // 版本号
+        pom.version = "1.0.0"
+    }
+}
