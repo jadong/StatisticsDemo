@@ -14,7 +14,7 @@ public class Sender {
      * @return
      */
     public int send(Map<String,String> params){
-        TrackerLogger.getLogger().i(params);
+        TrackerLogger.getLogger().i("Sender",params);
         return 1;
     }
 }

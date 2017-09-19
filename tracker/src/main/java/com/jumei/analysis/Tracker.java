@@ -7,6 +7,7 @@ import java.util.Map;
 
 /**
  * Created by kayo on 17/9/18.
+ *
  */
 public class Tracker {
 
@@ -19,6 +20,7 @@ public class Tracker {
         this.context = context;
         argCompat = new ArgCompat();
         sender = new Sender();
+        new Config(context);
     }
 
     /**
@@ -89,7 +91,7 @@ public class Tracker {
     }
 
     /**
-     * 时间被触发
+     * 事件被触发
      *
      * @param eventId
      * @param className

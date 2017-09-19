@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
 
+import com.jumei.analysis.Tracker;
 import com.jumei.tracker.annotation.PointArg;
 import com.jumei.tracker.annotation.PointView;
 
@@ -43,8 +44,16 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 System.out.println("点击btn_go-----");
+                Tracker.onClick("btn_go",getLocalClassName(),new User("xiaoming",19));
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getIntent().putExtra("scheme","kayo://page/main?a=111&b=222&scheme=http%3a%2f%2fwww.baidu.com");
+        Tracker.onAttached(getLocalClassName(),getIntent());
     }
 
     @PointView(eventId = "AA", dataId = 22)
