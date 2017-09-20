@@ -16,6 +16,7 @@ public class ClassVisitorAdapter extends ClassVisitor {
 
     private String TAG = "ClassVisitorAdapter";
     private FieldEntity fieldEntity;
+    private String outerClassFullName;
 
     public ClassVisitorAdapter(ClassVisitor classVisitor) {
         super(Opcodes.ASM5, classVisitor);
@@ -37,15 +38,27 @@ public class ClassVisitorAdapter extends ClassVisitor {
     }
 
     @Override
+    public void visitOuterClass(String outerClassFullName, String s1, String s2) {
+        super.visitOuterClass(outerClassFullName, s1, s2);
+        LogUtils.println(TAG, "--visitOuterClass--" + outerClassFullName + "--" + s1 + "--" + s2);
+        this.outerClassFullName = outerClassFullName;
+    }
+
+    @Override
     public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
         LogUtils.println(TAG, "--visitAnnotation--" + desc);
         return super.visitAnnotation(desc, visible);
     }
 
     @Override
-    public FieldVisitor visitField(int i, String fieldName, String s1, String s2, Object o) {
-        LogUtils.println(TAG, "--visitField--" + fieldName + "---" + s1 + "--" + s2 + "--" + o);
-        FieldVisitor fieldVisitor = super.visitField(i, fieldName, s1, s2, o);
+    public FieldVisitor visitField(int i, String fieldName, String desc, String s2, Object o) {
+        LogUtils.println(TAG, "--visitField--" + fieldName + "---" + desc + "--" + s2 + "--" + o);
+        if (fieldName.startsWith("this$") && desc.contains(outerClassFullName)) {
+            fieldEntity.setRefVarName(fieldName);
+            fieldEntity.setRefVarType(desc);
+            fieldEntity.setRefClassFullName(outerClassFullName);
+        }
+        FieldVisitor fieldVisitor = super.visitField(i, fieldName, desc, s2, o);
         if (fieldVisitor != null) {
             fieldVisitor = new FieldVisitorAdapter(fieldName, fieldEntity, fieldVisitor);
         }
@@ -58,7 +71,7 @@ public class ClassVisitorAdapter extends ClassVisitor {
         LogUtils.println(TAG, "--visitMethod--" + name + "---" + desc);
         MethodVisitor methodVisitor = cv.visitMethod(access, name, desc, signature, exceptions);
         //自定义方法访问者
-        methodVisitor = new MethodVisitorAdapter(name, fieldEntity, methodVisitor, access, name, desc);
+        methodVisitor = new MethodVisitorAdapter(fieldEntity, methodVisitor, access, name, desc);
         return methodVisitor;
     }
 

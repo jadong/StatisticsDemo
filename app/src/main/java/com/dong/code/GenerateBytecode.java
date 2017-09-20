@@ -1,5 +1,6 @@
 package com.dong.code;
 
+import com.dong.statistics.MainActivity;
 import com.jumei.analysis.Tracker;
 
 /**
@@ -7,13 +8,24 @@ import com.jumei.analysis.Tracker;
  */
 public class GenerateBytecode {
 
-    private Object object;
+    private MainActivity mainActivity;
+
+    public GenerateBytecode(MainActivity mainActivity) {
+        this.mainActivity = mainActivity;
+    }
 
     public void code() {
 
-        String eventId = "EEEE";
-        String className = "CCCC";
-        Tracker.onClick(eventId, className, GenerateBytecode.this.object);
+        /**
+         * mv.visitLdcInsn("EEEE");
+         mv.visitLdcInsn("CCCC");
+         mv.visitVarInsn(ALOAD, 0);
+         mv.visitFieldInsn(GETFIELD, "com/dong/code/GenerateBytecode", "mainActivity", "Lcom/dong/statistics/MainActivity;");
+         mv.visitFieldInsn(GETFIELD, "com/dong/statistics/MainActivity", "params", "Ljava/lang/String;");
+         mv.visitMethodInsn(INVOKESTATIC, "com/jumei/analysis/Tracker", "onClick", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Object;)V", false);
+
+         */
+        //Tracker.onClick("EEEE", "CCCC", this.mainActivity.params);
 
     }
 

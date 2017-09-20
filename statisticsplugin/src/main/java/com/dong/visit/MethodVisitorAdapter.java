@@ -1,9 +1,8 @@
 package com.dong.visit;
 
 import com.dong.visit.log.LogUtils;
-import com.jumei.tracker.annotation.PointClick;
+import com.jumei.tracker.annotation.ExecuteTime;
 import com.jumei.tracker.annotation.PointParams;
-import com.jumei.tracker.annotation.PointView;
 
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.MethodVisitor;
@@ -23,18 +22,15 @@ import org.objectweb.asm.commons.AdviceAdapter;
 public class MethodVisitorAdapter extends AdviceAdapter {
 
     private String TAG = "MethodVisitorAdapter";
-    private boolean isView = false;
-    private boolean isClick = false;
+    private boolean isExecuteTime = false;
     private boolean isParams = false;
     private String methodName;
-    private ClickEntity clickEntity;
-    private ViewEntity viewEntity;
     private FieldEntity fieldEntity;
     private ParamsEntity paramsEntity;
 
-    protected MethodVisitorAdapter(String methodName, FieldEntity fieldEntity, MethodVisitor methodVisitor, int access, String name, String desc) {
+    protected MethodVisitorAdapter(FieldEntity fieldEntity, MethodVisitor methodVisitor, int access, String name, String desc) {
         super(Opcodes.ASM5, methodVisitor, access, name, desc);
-        this.methodName = methodName;
+        this.methodName = name;
         this.fieldEntity = fieldEntity;
     }
 
@@ -42,6 +38,12 @@ public class MethodVisitorAdapter extends AdviceAdapter {
     public void visitCode() {
         super.visitCode();
         LogUtils.println(TAG, "---visitCode---");
+    }
+
+    @Override
+    public void visitParameter(String s, int i) {
+        super.visitParameter(s, i);
+        LogUtils.println(TAG, "---visitParameter---" + s + "---" + i);
     }
 
     /**
@@ -53,18 +55,8 @@ public class MethodVisitorAdapter extends AdviceAdapter {
         LogUtils.println(TAG, "---visitAnnotation---" + desc);
         AnnotationVisitor annotationVisitor = super.visitAnnotation(desc, visible);
 
-        if (Type.getDescriptor(PointClick.class).equals(desc)) {
-            isClick = true;
-            if (annotationVisitor != null) {
-                clickEntity = new ClickEntity();
-                annotationVisitor = new AnnotationVisitorAdapter(clickEntity, annotationVisitor);
-            }
-        } else if (Type.getDescriptor(PointView.class).equals(desc)) {
-            isView = true;
-            if (annotationVisitor != null) {
-                viewEntity = new ViewEntity();
-                annotationVisitor = new AnnotationVisitorAdapter(viewEntity, annotationVisitor);
-            }
+        if (Type.getDescriptor(ExecuteTime.class).equals(desc)) {
+            isExecuteTime = true;
         } else if (Type.getDescriptor(PointParams.class).equals(desc)) {
             isParams = true;
             if (annotationVisitor != null) {
@@ -82,47 +74,29 @@ public class MethodVisitorAdapter extends AdviceAdapter {
     @Override
     protected void onMethodEnter() {
         LogUtils.println(TAG, "---onMethodEnter---");
-        if (isView && viewEntity != null && fieldEntity != null) {
+        if (isExecuteTime) {
             //记录方法开始时间
             printStartTime();
+        }
 
-            LogUtils.println(TAG, "=====onMethodEnter====浏览事件===viewEntity=" + viewEntity + "==fieldEntity=" + fieldEntity);
-
-            //浏览事件埋点
-            FieldEntity.DataField dataField = fieldEntity.getDataField(viewEntity.getDataId());
-            if (dataField == null) {
-                return;
-            }
-            mv.visitLdcInsn(viewEntity.getEventId());
-            mv.visitVarInsn(ASTORE, 1);
-            mv.visitLdcInsn(fieldEntity.getClassFullName());
-            mv.visitVarInsn(ASTORE, 2);
-            mv.visitVarInsn(ALOAD, 1);
-            mv.visitVarInsn(ALOAD, 2);
-            mv.visitVarInsn(ALOAD, 0);
-            mv.visitFieldInsn(GETFIELD, fieldEntity.getClassFullName(), dataField.getDataName(), dataField.getDataType());
-            mv.visitMethodInsn(INVOKESTATIC, "com/jumei/analysis/Tracker", "onView", "(Ljava/lang/String;Ljava/lang/String;" + dataField.getDataType() + ")V", false);
-
-
-        } else if (isParams && paramsEntity != null) {
+        if (isParams && paramsEntity != null) {
 
             LogUtils.println(TAG, "=====onMethodEnter====点击事件===paramsEntity=" + paramsEntity);
 
             //点击事件埋点
-
             mv.visitLdcInsn(paramsEntity.getEventId());
-            mv.visitVarInsn(ASTORE, 1);
-            mv.visitLdcInsn(paramsEntity.getClassFullName());
-            mv.visitVarInsn(ASTORE, 2);
-            mv.visitVarInsn(ALOAD, 1);
-            mv.visitVarInsn(ALOAD, 2);
+            mv.visitLdcInsn(fieldEntity.getClassFullName());
             mv.visitVarInsn(ALOAD, 0);
-            mv.visitFieldInsn(GETFIELD, paramsEntity.getClassFullName(), paramsEntity.getParamsName(), paramsEntity.getParamsType());
-            mv.visitMethodInsn(INVOKESTATIC, "com/jumei/analysis/Tracker", "onClick", "(Ljava/lang/String;Ljava/lang/String;" + paramsEntity.getParamsType() + ")V", false);
 
+            if (fieldEntity.getRefVarName() != null) {
+                mv.visitFieldInsn(GETFIELD, fieldEntity.getClassFullName(), fieldEntity.getRefVarName(), fieldEntity.getRefVarType());
+                mv.visitFieldInsn(GETFIELD, fieldEntity.getRefClassFullName(), paramsEntity.getParamsName(), "Ljava/lang/Object;");
+            } else {
+                mv.visitFieldInsn(GETFIELD, fieldEntity.getClassFullName(), paramsEntity.getParamsName(), "Ljava/lang/Object;");
+            }
+            mv.visitMethodInsn(INVOKESTATIC, "com/jumei/analysis/Tracker", "onClick", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Object;)V", false);
         }
     }
-
 
     /**
      * 方法结束时调用
@@ -130,7 +104,7 @@ public class MethodVisitorAdapter extends AdviceAdapter {
     @Override
     protected void onMethodExit(int i) {
         LogUtils.println(TAG, "---onMethodExit---");
-        if (isView) {
+        if (isExecuteTime) {
 
             //记录并输出方法耗时
             printEndTime();

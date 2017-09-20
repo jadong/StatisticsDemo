@@ -13,27 +13,13 @@ public class AnnotationVisitorAdapter extends AnnotationVisitor {
 
     private String TAG = "AnnotationVisitorAdapter";
     private FieldEntity.DataField dataField;
-    private ClickEntity clickEntity;
-    private ViewEntity viewEntity;
     private ParamsEntity paramsEntity;
 
-    public AnnotationVisitorAdapter(FieldEntity.DataField dataField, AnnotationVisitor annotationVisitor) {
-        super(Opcodes.ASM5, annotationVisitor);
-        this.dataField = dataField;
-        LogUtils.println(TAG, "--AnnotationVisitorAdapter()--dataField=" + dataField);
-    }
-
-    public AnnotationVisitorAdapter(ClickEntity clickEntity, AnnotationVisitor annotationVisitor) {
-        super(Opcodes.ASM5, annotationVisitor);
-        this.clickEntity = clickEntity;
-        LogUtils.println(TAG, "--AnnotationVisitorAdapter()--clickEntity=" + clickEntity);
-    }
-
-    public AnnotationVisitorAdapter(ViewEntity viewEntity, AnnotationVisitor annotationVisitor) {
-        super(Opcodes.ASM5, annotationVisitor);
-        this.viewEntity = viewEntity;
-        LogUtils.println(TAG, "--AnnotationVisitorAdapter()--viewEntity=" + viewEntity);
-    }
+//    public AnnotationVisitorAdapter(FieldEntity.DataField dataField, AnnotationVisitor annotationVisitor) {
+//        super(Opcodes.ASM5, annotationVisitor);
+//        this.dataField = dataField;
+//        LogUtils.println(TAG, "--AnnotationVisitorAdapter()--dataField=" + dataField);
+//    }
 
     public AnnotationVisitorAdapter(ParamsEntity paramsEntity, AnnotationVisitor annotationVisitor) {
         super(Opcodes.ASM5, annotationVisitor);
@@ -52,33 +38,12 @@ public class AnnotationVisitorAdapter extends AnnotationVisitor {
             }
         }
 
-        //@PointClick
-        if (clickEntity != null) {
-            if (name.equals("dataId")) {
-                clickEntity.setDataId((int) value);
-            } else if (name.equals("eventId")) {
-                clickEntity.setEventId(value.toString());
-            }
-        }
-
-        //@PointView
-        if (viewEntity != null) {
-            if (name.equals("dataId")) {
-                viewEntity.setDataId((int) value);
-            } else if (name.equals("eventId")) {
-                viewEntity.setEventId(value.toString());
-            }
-        }
-
+        //@PointParams
         if (paramsEntity != null) {
             if (name.equals("eventId")) {
                 paramsEntity.setEventId(value.toString());
             } else if (name.equals("paramsName")) {
                 paramsEntity.setParamsName(value.toString());
-            } else if (name.equals("paramsType")) {
-                paramsEntity.setParamsType(value.toString());
-            } else if (name.equals("classFullName")) {
-                paramsEntity.setClassFullName(value.toString());
             }
         }
 
@@ -87,7 +52,6 @@ public class AnnotationVisitorAdapter extends AnnotationVisitor {
     @Override
     public void visitEnd() {
         super.visitEnd();
-        LogUtils.println(TAG, "---visitEnd--dataField=" + dataField + "---clickEntity=" + clickEntity + "---=viewEntity=" + viewEntity);
         LogUtils.println(TAG, "---visitEnd---paramsEntity=" + paramsEntity);
     }
 }

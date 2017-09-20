@@ -9,8 +9,35 @@ import java.util.Map;
  */
 public class FieldEntity {
 
+    private String refVarName;
+    private String refVarType;
+    private String refClassFullName;
     private String classFullName;
     private Map<Integer, DataField> dataFields = new HashMap<>();
+
+    public String getRefVarName() {
+        return refVarName;
+    }
+
+    public void setRefVarName(String refVarName) {
+        this.refVarName = refVarName;
+    }
+
+    public String getRefVarType() {
+        return refVarType;
+    }
+
+    public void setRefVarType(String refVarType) {
+        this.refVarType = refVarType;
+    }
+
+    public String getRefClassFullName() {
+        return refClassFullName;
+    }
+
+    public void setRefClassFullName(String refClassFullName) {
+        this.refClassFullName = refClassFullName;
+    }
 
     public String getClassFullName() {
         return classFullName;
