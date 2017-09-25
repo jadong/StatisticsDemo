@@ -1,8 +1,6 @@
 package com.jumei.analysis;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 
 import java.util.Map;
 
