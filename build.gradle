@@ -1,6 +1,5 @@
-apply from: './config.gradle'
+apply from: './version_config.gradle'
 buildscript {
-    ext.support_version = '25.+'
 
     repositories {
         jcenter()
@@ -22,6 +21,7 @@ allprojects {
         maven { url uri('/Users/dong/mavenRepositories') }
         maven { url uri('/Users/kayo/maven') }
     }
+
 }
 
 task clean(type: Delete) {
