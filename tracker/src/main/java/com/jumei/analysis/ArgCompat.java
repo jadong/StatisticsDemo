@@ -1,5 +1,7 @@
 package com.jumei.analysis;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -43,23 +45,25 @@ public class ArgCompat {
 
     /**
      * 绑定页面时调用
-     * @param className 页面类
-     * @param intent intent
      */
-    public void onAttached(String className,Intent intent){
-        if (TextUtils.isEmpty(className)){
-            className = "";
+    public void onAttached(Context context){
+        if (context == null) {
+            return;
         }
+        String simpleName = context.getClass().getSimpleName();
         if (baseArgs == null) {
             baseArgs = new HashMap<>();
         }
-        baseArgs.put(Content.ATTACHED_PAGE,className);
-        if (intent != null) {
-            Bundle extras = intent.getExtras();
-            if (extras != null){
-                Object scheme = extras.get("scheme");
-                if (scheme != null && scheme instanceof String){
-                    setSchemeArgs(String.valueOf(scheme));
+        baseArgs.put(Content.ATTACHED_PAGE,simpleName);
+        if (context instanceof Activity){
+            Intent intent = ((Activity) context).getIntent();
+            if (intent != null) {
+                Bundle extras = intent.getExtras();
+                if (extras != null){
+                    Object scheme = extras.get("scheme");
+                    if (scheme != null && scheme instanceof String){
+                        setSchemeArgs(String.valueOf(scheme));
+                    }
                 }
             }
         }

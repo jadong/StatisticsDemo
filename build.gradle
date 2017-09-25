@@ -3,8 +3,8 @@ buildscript {
 
     repositories {
         jcenter()
-        maven { url uri('/Users/dong/mavenRepositories') }
-//        maven { url uri('/Users/kayo/maven') }
+//        maven { url uri('/Users/dong/mavenRepositories') }
+        maven { url uri('/Users/kayo/maven') }
 
     }
 
@@ -18,8 +18,8 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
-//        maven { url uri('/Users/kayo/maven') }
-        maven { url uri('/Users/dong/mavenRepositories') }
+        maven { url uri('/Users/kayo/maven') }
+//        maven { url uri('/Users/dong/mavenRepositories') }
     }
 }
 

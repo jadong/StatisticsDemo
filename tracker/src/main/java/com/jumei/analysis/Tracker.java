@@ -1,5 +1,6 @@
 package com.jumei.analysis;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
@@ -62,14 +63,13 @@ public class Tracker {
 
     /**
      * 绑定当前视图
-     *
-     * @param className
-     * @param intent
+     * @param context 上下文对象
      */
-    public static void onAttached(String className, Intent intent) {
+    public static void onAttached(Context context) {
+
         TrackerLogger.getLogger().i("Tracker","Tracker#onAttached()");
         if (tracker != null && tracker.argCompat != null) {
-            tracker.argCompat.onAttached(className, intent);
+            tracker.argCompat.onAttached(context);
         }else {
             throw new IllegalArgumentException("the tracker need to invoking " +
                     "init(Content) method , place check it!");

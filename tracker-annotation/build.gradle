@@ -12,8 +12,8 @@ targetCompatibility = "1.7"
 uploadArchives{
     repositories.mavenDeployer{
         // 本地仓库路径
-        repository(url: uri('/Users/dong/mavenRepositories'))
-//        repository(url: uri('/Users/kayo/maven'))
+//        repository(url: uri('/Users/dong/mavenRepositories'))
+        repository(url: uri('/Users/kayo/maven'))
         // 唯一标识
         pom.groupId = "com.jumei.tracker"
         // 项目名称

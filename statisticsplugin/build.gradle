@@ -7,7 +7,7 @@ dependencies {
     compile 'com.android.tools.build:gradle:2.3.3'
     compile 'org.ow2.asm:asm:5.0.4'
     compile 'org.ow2.asm:asm-commons:5.0.4'
-//    compile project(':tracker-annotation')
+    //compile project(':tracker-annotation')
     compile 'com.jumei.tracker:tracker-annotation:1.0.0'
 }
 
@@ -21,8 +21,8 @@ uploadArchives {
             // repository(url: "http://www.xxx.com/repos") {
             //    authentication(userName: "admin", password: "admin")
             // }
-            repository(url: uri('/Users/dong/mavenRepositories'))
-//            repository(url: uri('/Users/kayo/maven'))
+//            repository(url: uri('/Users/dong/mavenRepositories'))
+            repository(url: uri('/Users/kayo/maven'))
         }
     }
 }
