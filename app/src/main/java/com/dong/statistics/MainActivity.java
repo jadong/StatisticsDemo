@@ -5,9 +5,8 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
 
-import com.jumei.tracker.annotation.PointArg;
+import com.jumei.tracker.annotation.ExecuteTime;
 import com.jumei.tracker.annotation.PointParams;
-import com.jumei.tracker.annotation.PointView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,15 +17,17 @@ import java.util.List;
  */
 public class MainActivity extends BaseActivity {
 
-    @PointArg({11, 33})
+
     private String params = "埋点参数";
 
-    @PointArg({22})
     private String params22 = "埋点参数2222";
+
+    private String params33 = "埋点参数3333";
 
     private List<String> list = new ArrayList<>();
     private List<String> list2 = new ArrayList<>();
     private Button btn_go;
+    private Button btn_jump;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,6 +35,7 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
 
         btn_go = (Button) findViewById(R.id.btn_go);
+        btn_jump = (Button) findViewById(R.id.btn_jump);
 
         initData(1000);
 
@@ -41,22 +43,32 @@ public class MainActivity extends BaseActivity {
 
         btn_go.setOnClickListener(new View.OnClickListener() {
 
-            @PointParams(eventId = "AAAA",paramsName = "params",paramsType = "java.lang.String",classFullName = "com.dong.statistics.MainActivity")
+            @PointParams(eventId = "AAAA", paramsName = "params")
             @Override
             public void onClick(View v) {
                 System.out.println("点击btn_go-----");
             }
         });
+
+        btn_jump.setOnClickListener(new View.OnClickListener() {
+
+            @PointParams(eventId = "DDDD", paramsName = "params")
+            @Override
+            public void onClick(View v) {
+                System.out.println("btn_jump-----");
+            }
+        });
     }
 
-    @PointView(eventId = "AA", dataId = 22)
+    @PointParams(eventId = "BBBB", paramsName = "params22")
     public void initData(int count) {
         for (int i = 0; i < count; i++) {
             list.add("--" + i);
         }
     }
 
-    @PointView(eventId = "BB", dataId = 33)
+    @PointParams(eventId = "FFFFF", paramsName = "params33")
+    @ExecuteTime
     public void initData2(int count) {
         for (int i = 0; i < count; i++) {
             list2.add("--" + i);
