@@ -1,6 +1,7 @@
 package com.jumei.analysis;
 
 import android.content.Context;
+import android.view.View;
 
 import java.util.Map;
 
@@ -37,6 +38,10 @@ public class Tracker {
             }
         }
         return tracker;
+    }
+
+    public static void onClick(View view, String eventId) {
+        System.out.println("onClick view " + view);
     }
 
     public static void onClick(String eventId, String className, Object object) {

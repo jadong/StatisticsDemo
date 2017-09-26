@@ -1,12 +1,10 @@
 package com.dong.visit;
 
 import com.dong.visit.log.LogUtils;
-import com.jumei.tracker.annotation.PointArg;
 
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
 
 /**
  * 字段访问适配

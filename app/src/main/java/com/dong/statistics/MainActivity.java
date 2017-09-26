@@ -58,6 +58,7 @@ public class MainActivity extends BaseActivity {
                 System.out.println("btn_jump-----");
             }
         });
+
     }
 
     @PointParams(eventId = "BBBB", paramsName = "params22")

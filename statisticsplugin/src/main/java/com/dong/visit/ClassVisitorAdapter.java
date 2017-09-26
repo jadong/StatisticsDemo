@@ -32,15 +32,21 @@ public class ClassVisitorAdapter extends ClassVisitor {
     }
 
     @Override
-    public void visitInnerClass(String s, String s1, String s2, int i) {
-        super.visitInnerClass(s, s1, s2, i);
-        LogUtils.println(TAG, "--visitInnerClass--" + s);
+    public void visitSource(String s, String s1) {
+        super.visitSource(s, s1);
+        LogUtils.println(TAG, "--visitSource--" + s + "---" + s1);
     }
 
     @Override
-    public void visitOuterClass(String outerClassFullName, String s1, String s2) {
-        super.visitOuterClass(outerClassFullName, s1, s2);
-        LogUtils.println(TAG, "--visitOuterClass--" + outerClassFullName + "--" + s1 + "--" + s2);
+    public void visitInnerClass(String classFullName, String s1, String s2, int i) {
+        super.visitInnerClass(classFullName, s1, s2, i);
+        LogUtils.println(TAG, "--visitInnerClass--" + classFullName + "---" + s1 + "---" + s2);
+    }
+
+    @Override
+    public void visitOuterClass(String outerClassFullName, String methodName, String methodDesc) {
+        super.visitOuterClass(outerClassFullName, methodName, methodDesc);
+        LogUtils.println(TAG, "--visitOuterClass--" + outerClassFullName + "--" + methodName + "--" + methodDesc);
         this.outerClassFullName = outerClassFullName;
     }
 

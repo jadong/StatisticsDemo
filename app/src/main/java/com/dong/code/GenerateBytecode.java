@@ -1,5 +1,7 @@
 package com.dong.code;
 
+import android.view.View;
+
 import com.dong.statistics.MainActivity;
 import com.jumei.analysis.Tracker;
 
@@ -26,7 +28,10 @@ public class GenerateBytecode {
 
          */
         //Tracker.onClick("EEEE", "CCCC", this.mainActivity.params);
+    }
 
+    public void onClick(View view) {
+        Tracker.onClick(view,"RRRRRRR");
     }
 
 }
