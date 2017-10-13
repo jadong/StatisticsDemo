@@ -45,10 +45,12 @@ public class TrackerLogger {
         StackTraceElement[] stackTrace = thread.getStackTrace();
         StackTraceElement ste = fixStackTrace(stackTrace);
         Log.i(tag, LOG_LINE);
-        Log.i(tag, "* 调用者类:" + ste.getClassName());
-        Log.i(tag, "* 调用时间:" + dateFormat.format(new Date()));
-        Log.i(tag, "* 调用者函数:" + ste.getMethodName() + "()");
-        Log.i(tag, "* 调用者线程:" + thread.getName());
+        Log.w(tag, "*  ┌-----------------------------------------");
+        Log.w(tag, "*  |调用者类:" + ste.getClassName());
+        Log.w(tag, "*  |调用时间:" + dateFormat.format(new Date()));
+        Log.w(tag, "*  |调用者函数:" + ste.getMethodName() + "()");
+        Log.w(tag, "*  |调用者线程:" + thread.getName());
+        Log.w(tag, "*  └-----------------------------------------");
 
         if (msgs != null) {
             for (Object msg : msgs) {

@@ -2,9 +2,12 @@ package com.dong.statistics;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 
+import com.jumei.analysis.Tracker;
 import com.jumei.tracker.annotation.ExecuteTime;
 import com.jumei.tracker.annotation.PointParams;
 
@@ -36,17 +39,21 @@ public class MainActivity extends BaseActivity {
 
         btn_go = (Button) findViewById(R.id.btn_go);
         btn_jump = (Button) findViewById(R.id.btn_jump);
-
         initData(1000);
 
         initData2(10000);
-
+        btn_go.setTag("en=aaa|b=45667");
         btn_go.setOnClickListener(new View.OnClickListener() {
 
             @PointParams(eventId = "AAAA", paramsName = "params")
             @Override
             public void onClick(View v) {
                 System.out.println("点击btn_go-----");
+
+                Tracker.appendParam(btn_go,"en","0x4433234");
+                Tracker.onCTRClick("",new User("小明",18));
+
+
             }
         });
 
