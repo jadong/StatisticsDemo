@@ -12,7 +12,7 @@ targetCompatibility = "1.7"
 uploadArchives{
     repositories.mavenDeployer{
         // 本地仓库路径
-        repository(url: uri('${MAVEN_PATH}'))
+        repository(url: uri("${MAVEN_PATH}"))
         // 唯一标识
         pom.groupId = "com.jumei.tracker"
         // 项目名称

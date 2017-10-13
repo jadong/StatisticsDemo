@@ -64,6 +64,8 @@ public class ArgCompat {
                     if (scheme != null && scheme instanceof String){
                         setSchemeArgs(String.valueOf(scheme));
                     }
+                    //TODO 根据配置文件读取页面数据
+
                 }
             }
         }
@@ -83,6 +85,7 @@ public class ArgCompat {
         if (o != null){
             if (o instanceof JSONObject){
                 JSONObject o1 = (JSONObject) o;
+                TrackerLogger.getLogger().i("convert","BeanToJson",o1);
                 o1.put(Content.EVENT_CLASS_NAME,eventClassName);
                 o1.put(Content.EVENT_ID,eventId);
 
@@ -107,7 +110,6 @@ public class ArgCompat {
         }
         TrackerLogger.getLogger().i("ArgCompat  params",params);
         return params;
-
     }
 
     private void setSchemeArgs(String scheme){

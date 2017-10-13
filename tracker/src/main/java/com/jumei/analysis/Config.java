@@ -36,7 +36,8 @@ public class Config {
     private String isRoot(){
         String bool = "Root:false";
         try{
-            if ((!new File("/system/bin/su").exists()) && (!new File("/system/xbin/su").exists())){
+            if ((!new File("/system/bin/su").exists())
+                    && (!new File("/system/xbin/su").exists())){
                 bool = "Root:false";
             } else {
                 bool = "Root:true";
