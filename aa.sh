@@ -40,7 +40,7 @@ fi
 #查看状态
 sss1=$normal
 sss2="Changes to be committed"
-check_status(){
+function check_status(){
     echo "--------开始验证提交状态--------"
     sss=$(git "status")
     if [[ $sss =~ $sss1 ]]; then
@@ -51,6 +51,7 @@ check_status(){
         #exit_script
 
     fi
+    return 100
 }
 
 #push代码
