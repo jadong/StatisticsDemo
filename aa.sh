@@ -14,10 +14,10 @@ log(){
     fi
 }
 info(){
-    log "i" $1
+    log "i" "$1"
 }
 warn(){
-    log "w" $1
+    log "w" "$1"
 }
 exit_script(){
     warn "退出脚本"
