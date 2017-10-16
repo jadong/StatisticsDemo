@@ -58,8 +58,8 @@ function check_status(){
 #push代码
 log "执行 push"
 ppp1="Compressing objects: 100%"
-ppp=$(git push)
-echo -e $ppp
+ppp=$(git "push")
+echo $ppp
 check_status
 
 
