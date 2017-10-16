@@ -37,6 +37,7 @@ exit_script(){
     warn "退出脚本"
     exit 1
 }
+normal="nothing to commit, working tree clean"
 #查看状态
 sss1=$normal
 sss2="Changes to be committed"
@@ -50,7 +51,6 @@ function check_status(){
         exit_script
     fi
 }
-normal="nothing to commit, working tree clean"
 info '执行 pull'
 
 aaa=$(git "pull")
