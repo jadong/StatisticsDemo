@@ -51,16 +51,16 @@ function check_status(){
     fi
 }
 normal="nothing to commit, working tree clean"
-info '执行 pull' 'e'
+info '执行 pull'
 
 aaa=$(git "pull")
 bbb1="Already up-to-date."
 bbb2="Unpacking objects: 100%"
 echo -e "$aaa"
 if  [[ $aaa =~ $bbb1 ]];then
-    echo "拉取代码成功"
+    message "拉取代码成功" 'e'
 elif [[ $aaa =~ $bbb2 ]];then
-    echo "当前代码为最新状态，无需更新"
+    message "当前代码为最新状态，无需更新" "e"
     exit_script
 else
     echo "拉取代码成功失败"
