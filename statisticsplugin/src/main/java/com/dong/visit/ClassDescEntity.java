@@ -5,38 +5,39 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 当前类的描述信息
  * Created by dong on 2017/9/18.
  */
-public class FieldEntity {
+public class ClassDescEntity {
 
-    private String refVarName;
-    private String refVarType;
-    private String refClassFullName;
-    private String classFullName;
+    private String outerClassRefName;//外部类的引用名称
+    private String outerClassRefType;//外部类的引用类型
+    private String outerClassFullName;//外部类的全名
+    private String classFullName;//当前类的全名
     private Map<Integer, DataField> dataFields = new HashMap<>();
 
-    public String getRefVarName() {
-        return refVarName;
+    public String getOuterClassRefName() {
+        return outerClassRefName;
     }
 
-    public void setRefVarName(String refVarName) {
-        this.refVarName = refVarName;
+    public void setOuterClassRefName(String outerClassRefName) {
+        this.outerClassRefName = outerClassRefName;
     }
 
-    public String getRefVarType() {
-        return refVarType;
+    public String getOuterClassRefType() {
+        return outerClassRefType;
     }
 
-    public void setRefVarType(String refVarType) {
-        this.refVarType = refVarType;
+    public void setOuterClassRefType(String outerClassRefType) {
+        this.outerClassRefType = outerClassRefType;
     }
 
-    public String getRefClassFullName() {
-        return refClassFullName;
+    public String getOuterClassFullName() {
+        return outerClassFullName;
     }
 
-    public void setRefClassFullName(String refClassFullName) {
-        this.refClassFullName = refClassFullName;
+    public void setOuterClassFullName(String outerClassFullName) {
+        this.outerClassFullName = outerClassFullName;
     }
 
     public String getClassFullName() {
@@ -63,7 +64,7 @@ public class FieldEntity {
 
     @Override
     public String toString() {
-        return "FieldEntity{" +
+        return "ClassDescEntity{" +
                 "classFullName='" + classFullName + '\'' +
                 ", dataFields=" + dataFields +
                 '}';

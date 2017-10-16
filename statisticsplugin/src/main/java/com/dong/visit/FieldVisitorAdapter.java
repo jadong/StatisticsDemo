@@ -14,13 +14,13 @@ public class FieldVisitorAdapter extends FieldVisitor {
 
     private String TAG = "FieldVisitorAdapter";
     private String filedName;
-    private FieldEntity fieldEntity;
-    private FieldEntity.DataField dataField;
+    private ClassDescEntity classDescEntity;
+    private ClassDescEntity.DataField dataField;
 
-    public FieldVisitorAdapter(String filedName, FieldEntity fieldEntity, FieldVisitor fieldVisitor) {
+    public FieldVisitorAdapter(String filedName, ClassDescEntity classDescEntity, FieldVisitor fieldVisitor) {
         super(Opcodes.ASM5, fieldVisitor);
         this.filedName = filedName;
-        this.fieldEntity = fieldEntity;
+        this.classDescEntity = classDescEntity;
     }
 
     @Override
@@ -28,15 +28,15 @@ public class FieldVisitorAdapter extends FieldVisitor {
         LogUtils.println(TAG, "--visitAnnotation--" + desc);
         AnnotationVisitor annotationVisitor = super.visitAnnotation(desc, b);
 //        if (Type.getDescriptor(PointArg.class).equals(desc)) {
-//            dataField = new FieldEntity.DataField();
+//            dataField = new ClassDescEntity.DataField();
 //            dataField.setDataName(filedName);
 //            dataField.setDataType(desc);
 //            if (annotationVisitor != null) {
 //                annotationVisitor = new AnnotationVisitorAdapter(dataField, annotationVisitor);
 //            }
-//            fieldEntity.addDataField(dataField);
+//            classDescEntity.addDataField(dataField);
 //
-//            LogUtils.println(TAG, "====visitAnnotation==PointArg=" + fieldEntity);
+//            LogUtils.println(TAG, "====visitAnnotation==PointArg=" + classDescEntity);
 //        }
 
         return annotationVisitor;

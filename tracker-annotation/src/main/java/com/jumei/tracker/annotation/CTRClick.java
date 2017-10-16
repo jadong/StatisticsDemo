@@ -6,17 +6,16 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Created by dong on 2017/9/19.
+ * CTR点击事件标记
+ * Created by dong on 2017/10/16.
  */
 @Retention(RetentionPolicy.CLASS)
 @Target(ElementType.METHOD)
-public @interface PointParams {
-
-    String value();
+public @interface CTRClick {
 
     /**
-     * 数据变量名称
+     * 参数变量名称
      */
-    String dataName() default "";
+    String value() default "";
 
 }

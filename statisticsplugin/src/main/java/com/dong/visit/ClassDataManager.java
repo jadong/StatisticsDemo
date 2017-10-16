@@ -8,14 +8,14 @@ import java.util.Map;
  */
 public class ClassDataManager {
 
-    private static Map<String,FieldEntity> fieldDataMap = new HashMap<>();
+    private static Map<String,ClassDescEntity> fieldDataMap = new HashMap<>();
     private static Map<String,ClickEntity> methodDataMap = new HashMap<>();
 
-    public static void putFieldData(String classFullName, FieldEntity fieldEntity){
-        fieldDataMap.put(classFullName, fieldEntity);
+    public static void putFieldData(String classFullName, ClassDescEntity classDescEntity){
+        fieldDataMap.put(classFullName, classDescEntity);
     }
 
-    public static FieldEntity getFieldData(String classFullName){
+    public static ClassDescEntity getFieldData(String classFullName){
         return fieldDataMap.get(classFullName);
     }
 

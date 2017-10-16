@@ -12,19 +12,19 @@ import org.objectweb.asm.Opcodes;
 public class AnnotationVisitorAdapter extends AnnotationVisitor {
 
     private String TAG = "AnnotationVisitorAdapter";
-    private FieldEntity.DataField dataField;
-    private ParamsEntity paramsEntity;
+    private ClassDescEntity.DataField dataField;
+    private AnnotationParams annotationParams;
 
-//    public AnnotationVisitorAdapter(FieldEntity.DataField dataField, AnnotationVisitor annotationVisitor) {
+//    public AnnotationVisitorAdapter(ClassDescEntity.DataField dataField, AnnotationVisitor annotationVisitor) {
 //        super(Opcodes.ASM5, annotationVisitor);
 //        this.dataField = dataField;
 //        LogUtils.println(TAG, "--AnnotationVisitorAdapter()--dataField=" + dataField);
 //    }
 
-    public AnnotationVisitorAdapter(ParamsEntity paramsEntity, AnnotationVisitor annotationVisitor) {
+    public AnnotationVisitorAdapter(AnnotationParams annotationParams, AnnotationVisitor annotationVisitor) {
         super(Opcodes.ASM5, annotationVisitor);
-        this.paramsEntity = paramsEntity;
-        LogUtils.println(TAG, "--AnnotationVisitorAdapter()--paramsEntity=" + paramsEntity);
+        this.annotationParams = annotationParams;
+        LogUtils.println(TAG, "--AnnotationVisitorAdapter()--annotationParams=" + annotationParams);
     }
 
     @Override
@@ -32,18 +32,11 @@ public class AnnotationVisitorAdapter extends AnnotationVisitor {
         super.visit(name, value);
         LogUtils.println(TAG, "--visit--name=" + name + "--value=" + value);
 
-        if (dataField != null && name.equals("value")) {//@PointArg
-            if (value instanceof int[]) {
-                dataField.setDataIds((int[]) value);
-            }
-        }
-
-        //@PointParams
-        if (paramsEntity != null) {
+        if (annotationParams != null) {
             if (name.equals("eventId")) {
-                paramsEntity.setEventId(value.toString());
-            } else if (name.equals("paramsName")) {
-                paramsEntity.setParamsName(value.toString());
+                annotationParams.setEventId(value.toString());
+            } else if (name.equals("value")) {
+                annotationParams.setParamsName(value.toString());
             }
         }
 
@@ -52,6 +45,6 @@ public class AnnotationVisitorAdapter extends AnnotationVisitor {
     @Override
     public void visitEnd() {
         super.visitEnd();
-        LogUtils.println(TAG, "---visitEnd---paramsEntity=" + paramsEntity);
+        LogUtils.println(TAG, "---visitEnd---annotationParams=" + annotationParams);
     }
 }

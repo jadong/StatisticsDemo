@@ -1,11 +1,11 @@
 package com.dong.visit;
 
 import com.dong.visit.log.LogUtils;
+import com.jumei.tracker.annotation.CTRClick;
+import com.jumei.tracker.annotation.CTRView;
 import com.jumei.tracker.annotation.ExecuteTime;
-import com.jumei.tracker.annotation.PointParams;
 
 import org.objectweb.asm.AnnotationVisitor;
-import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
@@ -24,15 +24,14 @@ public class MethodVisitorAdapter extends AdviceAdapter {
 
     private String TAG = "MethodVisitorAdapter";
     private boolean isExecuteTime = false;
-    private boolean isParams = false;
     private String methodName;
-    private FieldEntity fieldEntity;
-    private ParamsEntity paramsEntity;
+    private ClassDescEntity classDescEntity;
+    private AnnotationParams annotationParams = new AnnotationParams();
 
-    protected MethodVisitorAdapter(FieldEntity fieldEntity, MethodVisitor methodVisitor, int access, String name, String desc) {
+    protected MethodVisitorAdapter(ClassDescEntity classDescEntity, MethodVisitor methodVisitor, int access, String name, String desc) {
         super(Opcodes.ASM5, methodVisitor, access, name, desc);
         this.methodName = name;
-        this.fieldEntity = fieldEntity;
+        this.classDescEntity = classDescEntity;
     }
 
     @Override
@@ -58,11 +57,15 @@ public class MethodVisitorAdapter extends AdviceAdapter {
 
         if (Type.getDescriptor(ExecuteTime.class).equals(desc)) {
             isExecuteTime = true;
-        } else if (Type.getDescriptor(PointParams.class).equals(desc)) {
-            isParams = true;
+        } else if (Type.getDescriptor(CTRClick.class).equals(desc)) {
+            annotationParams.setCTRClick(true);
             if (annotationVisitor != null) {
-                paramsEntity = new ParamsEntity();
-                annotationVisitor = new AnnotationVisitorAdapter(paramsEntity, annotationVisitor);
+                annotationVisitor = new AnnotationVisitorAdapter(annotationParams, annotationVisitor);
+            }
+        } else if (Type.getDescriptor(CTRView.class).equals(desc)) {
+            annotationParams.setCTRView(true);
+            if (annotationVisitor != null) {
+                annotationVisitor = new AnnotationVisitorAdapter(annotationParams, annotationVisitor);
             }
         }
 
@@ -80,23 +83,6 @@ public class MethodVisitorAdapter extends AdviceAdapter {
             printStartTime();
         }
 
-        if (isParams && paramsEntity != null) {
-
-            LogUtils.println(TAG, "=====onMethodEnter====点击事件===paramsEntity=" + paramsEntity);
-
-            //点击事件埋点
-            mv.visitLdcInsn(paramsEntity.getEventId());
-            mv.visitLdcInsn(fieldEntity.getClassFullName());
-            mv.visitVarInsn(ALOAD, 0);
-
-            if (fieldEntity.getRefVarName() != null) {
-                mv.visitFieldInsn(GETFIELD, fieldEntity.getClassFullName(), fieldEntity.getRefVarName(), fieldEntity.getRefVarType());
-                mv.visitFieldInsn(GETFIELD, fieldEntity.getRefClassFullName(), paramsEntity.getParamsName(), "Ljava/lang/Object;");
-            } else {
-                mv.visitFieldInsn(GETFIELD, fieldEntity.getClassFullName(), paramsEntity.getParamsName(), "Ljava/lang/Object;");
-            }
-            mv.visitMethodInsn(INVOKESTATIC, "com/jumei/analysis/Tracker", "onClick", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Object;)V", false);
-        }
     }
 
     /**
@@ -109,6 +95,62 @@ public class MethodVisitorAdapter extends AdviceAdapter {
 
             //记录并输出方法耗时
             printEndTime();
+        }
+
+        handlerCTR();
+    }
+
+    private void handlerCTR() {
+        if (annotationParams != null) {
+            LogUtils.println(TAG, "=====handlerCTRClick===annotationParams=" + annotationParams);
+
+
+            if (classDescEntity.getOuterClassRefName() != null) {//内部类中调用的字节码
+
+                //第一个参数名称默认为itemView
+                mv.visitVarInsn(ALOAD, 0);
+                mv.visitFieldInsn(GETFIELD, classDescEntity.getClassFullName(), classDescEntity.getOuterClassRefName(), classDescEntity.getOuterClassRefType());
+                mv.visitFieldInsn(GETFIELD, classDescEntity.getOuterClassFullName(), "itemView", "Landroid/view/View;");
+
+                //第二个参数为当前类名称字符串
+                mv.visitLdcInsn(classDescEntity.getClassFullName());
+
+                //第三个参数为埋点数据对象
+                if (annotationParams.getParamsName() == null || annotationParams.getParamsName().equals("")) {
+                    mv.visitInsn(ACONST_NULL);//参数名称为空
+                } else {
+                    mv.visitVarInsn(ALOAD, 0);
+                    mv.visitFieldInsn(GETFIELD, classDescEntity.getClassFullName(), classDescEntity.getOuterClassRefName(), classDescEntity.getOuterClassRefType());
+                    mv.visitFieldInsn(GETFIELD, classDescEntity.getOuterClassFullName(), annotationParams.getParamsName(), "Ljava/lang/Object;");
+                }
+
+            } else {//非内部类中调用的字节码
+
+                //第一个参数名称默认为itemView
+                mv.visitVarInsn(ALOAD, 0);
+                mv.visitFieldInsn(GETFIELD, classDescEntity.getClassFullName(), "itemView", "Landroid/view/View;");
+
+                //第二个参数为当前类名称字符串
+                if (annotationParams.getParamsName() == null || annotationParams.getParamsName().equals("")) {
+                    mv.visitInsn(ACONST_NULL);//参数名称为空
+                } else {
+                    mv.visitLdcInsn(classDescEntity.getClassFullName());
+                }
+
+                //第三个参数为埋点数据对象
+                mv.visitVarInsn(ALOAD, 0);
+                mv.visitFieldInsn(GETFIELD, classDescEntity.getClassFullName(), annotationParams.getParamsName(), "Ljava/lang/Object;");
+            }
+
+            String mN = "";
+            if (annotationParams.isCTRClick()) {
+                mN = "onCTRClick";//CTR点击事件埋点
+            } else if (annotationParams.isCTRView()) {
+                mN = "onCTRView";//CTR浏览事件埋点
+            }
+            if (!mN.equals("")) {
+                mv.visitMethodInsn(INVOKESTATIC, "com/jumei/analysis/Tracker", mN, "(Landroid/view/View;Ljava/lang/String;Ljava/lang/Object;)V", false);
+            }
         }
     }
 

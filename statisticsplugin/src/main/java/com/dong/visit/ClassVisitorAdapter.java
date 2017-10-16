@@ -15,12 +15,12 @@ import org.objectweb.asm.Opcodes;
 public class ClassVisitorAdapter extends ClassVisitor {
 
     private String TAG = "ClassVisitorAdapter";
-    private FieldEntity fieldEntity;
+    private ClassDescEntity classDescEntity;
     private String outerClassFullName;
 
     public ClassVisitorAdapter(ClassVisitor classVisitor) {
         super(Opcodes.ASM5, classVisitor);
-        fieldEntity = new FieldEntity();
+        classDescEntity = new ClassDescEntity();
     }
 
     @Override
@@ -28,7 +28,7 @@ public class ClassVisitorAdapter extends ClassVisitor {
         super.visit(version, access, name, signature, superName, interfaces);
         LogUtils.println(TAG, "--visit--" + name);
 //        classFullName = name.replaceAll("/", ".");
-        fieldEntity.setClassFullName(name);
+        classDescEntity.setClassFullName(name);
     }
 
     @Override
@@ -60,13 +60,13 @@ public class ClassVisitorAdapter extends ClassVisitor {
     public FieldVisitor visitField(int i, String fieldName, String desc, String s2, Object o) {
         LogUtils.println(TAG, "--visitField--" + fieldName + "---" + desc + "--" + s2 + "--" + o);
         if (fieldName.startsWith("this$") && desc.contains(outerClassFullName)) {
-            fieldEntity.setRefVarName(fieldName);
-            fieldEntity.setRefVarType(desc);
-            fieldEntity.setRefClassFullName(outerClassFullName);
+            classDescEntity.setOuterClassRefName(fieldName);
+            classDescEntity.setOuterClassRefType(desc);
+            classDescEntity.setOuterClassFullName(outerClassFullName);
         }
         FieldVisitor fieldVisitor = super.visitField(i, fieldName, desc, s2, o);
         if (fieldVisitor != null) {
-            fieldVisitor = new FieldVisitorAdapter(fieldName, fieldEntity, fieldVisitor);
+            fieldVisitor = new FieldVisitorAdapter(fieldName, classDescEntity, fieldVisitor);
         }
 
         return fieldVisitor;
@@ -77,7 +77,7 @@ public class ClassVisitorAdapter extends ClassVisitor {
         LogUtils.println(TAG, "--visitMethod--" + name + "---" + desc);
         MethodVisitor methodVisitor = cv.visitMethod(access, name, desc, signature, exceptions);
         //自定义方法访问者
-        methodVisitor = new MethodVisitorAdapter(fieldEntity, methodVisitor, access, name, desc);
+        methodVisitor = new MethodVisitorAdapter(classDescEntity, methodVisitor, access, name, desc);
         return methodVisitor;
     }
 
