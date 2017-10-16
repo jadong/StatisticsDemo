@@ -17,7 +17,14 @@ else
 fi
 git add .
 commitTime=$(date "+%F..%H:%M:%S")
-git commit -m "commit change  time==>>$commitTime"
+ccc=$(git "commit -m 'commit change  time==>>$commitTime'")
+ccc2="no changes added to commit"
+ccc3="nothing to commit, working tree clean"
+if [[ $ccc =~ $ccc2 ]];then
+    echo "提交代码不成功，请稍后重试"
+elif [[ $ccc =~ $ccc3 ]];then
+    echo "当前没有可提交的信息"
+fi
 
 
 
