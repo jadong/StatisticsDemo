@@ -29,7 +29,7 @@ info '执行 pull'
 aaa=$(git "pull")
 bbb1="Already up-to-date."
 bbb2="Unpacking objects: 100%"
-echo "$aaa"
+echo -e "$aaa"
 if  [[ $aaa =~ $bbb1 ]];then
     echo "拉取代码成功"
 elif [[ $aaa =~ $bbb2 ]];then
