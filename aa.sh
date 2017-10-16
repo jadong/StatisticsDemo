@@ -21,11 +21,11 @@ warn(){
     log "w" $1
 }
 exit_script(){
-    warn "退出j脚本"
+    warn "退出脚本"
     exit 1
 }
 normal="nothing to commit, working tree clean"
-info "执行 pull"
+info '执行 pull'
 
 aaa=$(git "pull")
 #aaa="Unpacking objects: 100%"
