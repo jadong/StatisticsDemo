@@ -27,12 +27,14 @@ normal="nothing to commit, working tree clean"
 info '执行 pull'
 
 aaa=$(git "pull")
-#aaa="Unpacking objects: 100%"
 bbb1="Already up-to-date."
 bbb2="Unpacking objects: 100%"
 echo "$aaa"
-if  [[ $aaa =~ $bbb1 ]] || [[ $aaa =~ $bbb2 ]];then
+if  [[ $aaa =~ $bbb1 ]];then
     echo "拉取代码成功"
+elif [[ $aaa =~ $bbb2 ]];then
+    echo "当前代码为最新状态，无需更新"
+    exit_script
 else
     echo "拉取代码成功失败"
     exit_script
