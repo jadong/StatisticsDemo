@@ -1,11 +1,16 @@
 filePath=$0
-echo "-----------------------------------"
+
+log(){
+    echo "-----------------------------------"
+    echo "-----$1-----"
+    echo "-----------------------------------"
+}
 exit_script(){
     echo "退出j脚本"
     exit 1
 }
 normal="nothing to commit, working tree clean"
-echo "--------执行 pull--------"
+log "执行 pull"
 
 aaa=$(git "pull")
 #aaa="Unpacking objects: 100%"
@@ -19,10 +24,10 @@ else
     exit_script
 fi
 #添加修改的文件
-echo "--------执行 add . 添加更改文件--------"
+log "执行 add . 添加更改文件"
 git add .
 
-echo "--------执行 commit--------"
+log "执行 commit"
 commitTime=$(date "+%F..%H:%M:%S")
 ccc=$(git commit -m "commit change  time==>>$commitTime")
 ccc2="no changes added to commit"
@@ -41,7 +46,7 @@ fi
 sss1=$normal
 sss2="Changes to be committed"
 function check_status(){
-    echo "--------开始验证提交状态--------"
+    log "开始验证提交状态"
     sss=$(git "status")
     if [[ $sss =~ $sss1 ]]; then
         echo "当前状态无可提交数据"
@@ -55,7 +60,7 @@ function check_status(){
 }
 
 #push代码
-echo "--------执行 push --------"
+log "执行 push"
 git push
 check_status
 
