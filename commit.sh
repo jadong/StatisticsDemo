@@ -7,3 +7,6 @@ git add .
 echo "--------开始执行 commit---------"
 git commit -m 'commit change'
 git status
+echo "--------开始执行 push---------"
+git push
+
