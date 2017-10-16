@@ -1,7 +1,9 @@
 package com.jumei.analysis;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by kayo on 17/10/12.
@@ -127,6 +129,23 @@ public class QUtils {
             return false;
         }
         return a.equals(b);
+    }
+
+    public static Map<String,String> mapMoveNull(Map<String,String> map){
+        if (map == null){
+            return null;
+        }
+        Map<String,String> temp = new HashMap<>();
+        Set<String> keys = map.keySet();
+        for (String key : keys) {
+            String value = map.get(key);
+            if (value != null
+                    && !stringIsEmpty(String.valueOf(value))
+                    && !stringEquals(String.valueOf(value),"null")){
+                temp.put(key,value);
+            }
+        }
+        return temp;
     }
 
 

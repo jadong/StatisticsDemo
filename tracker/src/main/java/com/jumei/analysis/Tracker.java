@@ -72,7 +72,18 @@ public class Tracker {
     public static void onCTRClick(View view,String className,Object object) {
         TrackerLogger.getLogger().i("Tracker", "Tracker#onClick()");
         if (tracker != null) {
-            tracker.onTrack("", className, null);
+            String event_id = "click_material";
+            Map map = null;
+            if (view != null){
+                Object tag = view.getTag(Content.tag_id);
+                if (tag != null){
+                    map = (Map) tag;
+                }
+                if (object == null){
+                    object = view.getTag(Content.object_id);
+                }
+            }
+            tracker.go(event_id, className,map, object);
         } else {
             throw new IllegalArgumentException("the tracker need to invoking " +
                     "init(Content) method , place check it!");
@@ -119,6 +130,9 @@ public class Tracker {
      */
     public static void onTrack(View view, String className, Object object){}
 
+    public static void onTrack(String eventId,String className, Object object){}
+
+
 
     /**
      * 为view添加tag参数值
@@ -128,7 +142,7 @@ public class Tracker {
      */
     @SuppressWarnings("unchecked")
     public static void appendParam(View view, String key, String value) {
-//        TrackerLogger.getLogger().i("appendParams",key+"="+value);
+//        TrackerLogger.getLogger().i("appendParam",key+"="+value);
         if (view == null
                 || (QUtils.stringIsEmpty(key) && QUtils.stringIsEmpty(value))){
             return;
@@ -151,16 +165,21 @@ public class Tracker {
      * @param view
      * @param object
      */
-    public static void appendParam(View view,Object object){}
+    public static void appendParam(View view,Object object){
+        TrackerLogger.getLogger().i("appendParam","添加数据体");
+        if (view != null){
+            view.setTag(Content.object_id,object);
+        }
+    }
 
 
 
 
     //动作开启
-    private void onTrack(String eventId, String className, Object object) {
+    private void go(String eventId, String className,Map<String,String> tagParams ,Object object) {
         TrackerLogger.getLogger().i("Tracker", "Tracker#onTrack()");
         if (argCompat != null && sender != null) {
-            Map<String, String> convert = argCompat.convert(eventId, className, object);
+            Map<String, String> convert = argCompat.convert(eventId, className, tagParams,object);
             sender.send(convert);
         }
     }

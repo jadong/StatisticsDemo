@@ -2,14 +2,10 @@ package com.dong.statistics;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 
 import com.jumei.analysis.Tracker;
-import com.jumei.tracker.annotation.ExecuteTime;
-import com.jumei.tracker.annotation.PointParams;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +46,8 @@ public class MainActivity extends BaseActivity {
                 System.out.println("点击btn_go-----");
 
                 Tracker.appendParam(btn_go,"en","0x4433234");
-//                Tracker.onCTRClick("",new User("小明",18));
+
+                Tracker.onCTRClick(btn_go,MainActivity.this.getLocalClassName(),new User("小明",18));
 //                Tracker.onClick(null,"",null);
 
 
@@ -73,7 +70,6 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    @ExecuteTime
     public void initData2(int count) {
         for (int i = 0; i < count; i++) {
             list2.add("--" + i);

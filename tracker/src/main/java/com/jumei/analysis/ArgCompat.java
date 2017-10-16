@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -41,7 +42,10 @@ public class ArgCompat {
         this.baseArgs.put(Content.MOBILE_IMSI,Config.MOBILE_IMSI);
         this.baseArgs.put(Content.MOBILE_ISROOT,Config.MOBILE_ISROOT);
         this.baseArgs.put(Content.MOBILE_NUMBER,Config.MOBILE_NUMBER);
+        this.baseArgs.put(Content.OS,"Android");
     }
+
+    public void setPageArgs(){}
 
     /**
      * 绑定页面时调用
@@ -75,49 +79,60 @@ public class ArgCompat {
      * 包装最终json
      * @return
      */
-    public Map<String,String> convert(String eventId,String eventClassName,Object object){
+    public Map<String,String> convert(String eventId,String eventClassName,
+                                      Map<String,String> tagParams,Object object){
         Map<String,String> params = new HashMap<>();
         if (baseArgs != null){
             params.putAll(baseArgs);
+        }
+        if (tagParams != null){
+            params.putAll(tagParams);
+        }
+        params.put(Content.EVENT_CLASS_NAME,eventClassName);
+        if (!QUtils.stringIsEmpty(eventId)){
+            params.put(Content.EVENT_ID,eventId);
         }
 
         Object o = JSONObject.toJSON(object);
         if (o != null){
             if (o instanceof JSONObject){
                 JSONObject o1 = (JSONObject) o;
-                o1.put(Content.EVENT_CLASS_NAME,eventClassName);
-                o1.put(Content.EVENT_ID,eventId);
 
                 if (schemeArgs !=null && !schemeArgs.isEmpty()){
                     Set<String> keys = schemeArgs.keySet();
                     for (String key : keys) {
                         String value = schemeArgs.get(key);
-                        if (Content.ATTACHED_SCHEME.equals(key)){
-                            ///放入params
-                            params.put(Content.ATTACHED_SCHEME,value);
-                        }else {
-                            ///放入object
-                            o1.put(key,value);
-                        }
+                        params.put(key,value);
                     }
                 }
-                Set<String> jsonKeys = o1.keySet();
-                for (String jsonKey : jsonKeys) {
-                    TrackerLogger.getLogger().i("ArgCompat  jsonKey",jsonKey);
-                    Object o2 = o1.get(jsonKey);
-                    if (o2 instanceof JSONObject){
-                        TrackerLogger.getLogger().i("ArgCompat  jsonKey",jsonKey+" is a object");
-                    }
-                }
-
-                params.put(Content.EVENT_DATA,o1.toJSONString());
-//                TrackerLogger.getLogger().i("ArgCompat  JSONObject",o);
+                //解析 json中的所有 基础数据的key
+                Map<String, String> map = parseJsonObject(o1);
+                params.putAll(map);
+//                params.put(Content.EVENT_DATA,o1.toJSONString());
             }else if (o instanceof JSONArray){
                 TrackerLogger.getLogger().i("ArgCompat  JSONArray 目前不想支持直接传List",o);
             }
         }
-        TrackerLogger.getLogger().i("ArgCompat  params",params);
         return params;
+    }
+
+    //解析json
+    private Map<String,String> parseJsonObject(JSONObject jsonObject){
+        Map<String,String> params = new HashMap<>();
+        if (jsonObject == null){
+            return params;
+        }
+        Set<String> jsonKeys = jsonObject.keySet();
+        for (String jsonKey : jsonKeys) {
+            Object value = jsonObject.get(jsonKey);
+            if ( value instanceof JSONObject){
+                params.putAll(parseJsonObject((JSONObject) value));
+            }else {
+                params.put(jsonKey,String.valueOf(value));
+            }
+        }
+        return params;
+
     }
 
     private void setSchemeArgs(String scheme){

@@ -18,7 +18,6 @@ public class DemoViewHolder extends BaseView {
         TextView textView = new TextView(context);
         textView.setOnClickListener(new View.OnClickListener() {
 
-            @PointParams(eventId = AppConstants.EVENT_1000, paramsName = "params")
             public void onClick(View view) {
                 System.out.println("text view onclick");
             }
@@ -28,7 +27,6 @@ public class DemoViewHolder extends BaseView {
         TextView textView2 = new TextView(context);
         textView2.setOnClickListener(new View.OnClickListener() {
 
-            @PointParams(eventId = "WWWWWWW", paramsName = "params2")
             @Override
             public void onClick(View view) {
                 System.out.println("text view onclick");
@@ -38,7 +36,6 @@ public class DemoViewHolder extends BaseView {
 
         new Thread(new Runnable() {
 
-            @PointParams(eventId = "Thread", paramsName = "params2")
             @Override
             public void run() {
                 System.out.println("thread run");

@@ -17,9 +17,9 @@ public class SAApplication extends Application {
         super.onCreate();
 
         Map<String,String> baseArgus = new HashMap<>();
-        baseArgus.put("argu1","123");
-        baseArgus.put("argu2","123");
-        baseArgus.put("argu3","123");
+        baseArgus.put("base_arg1","123");
+        baseArgus.put("base_arg2","234");
+        baseArgus.put("base_arg3","345");
         Tracker.init(this.getApplicationContext());
         Tracker.baseArgs(baseArgus);
 
