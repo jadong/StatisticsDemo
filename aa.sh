@@ -3,25 +3,52 @@ filePath=$0
 log(){
     l1="-----------------------------------"
     l2="-----"
+    if [ $2 = "e" ];then
+        l2=""
+    fi
     if [ $1 = "i" ];then
 #        echo  "$l1"
-        echo  "$l2$2$l2"
+        echo  "\033[32m$l2$2$l2\033[0m"
 #        echo  "$l1"
     elif [ $1='w' ];then
 #        echo  "\033[31m$l1\033[0m"
         echo  "\033[31m$l2$2$l2\033[0m"
 #        echo  "\033[31m$l1\033[0m"
+    elif [ $1='m' ];then
+        echo  "$l2$2$l2"
+    elif [];then
+        echo  "\033[34m$l2$2$l2\033[0m"
+
     fi
 }
+message(){
+    log "m" "$1" "$2"
+}
+tip(){
+    log "t" "$1" "$2"
+}
 info(){
-    log "i" "$1"
+    log "i" "$1" "$2"
 }
 warn(){
-    log "w" "$1"
+    log "w" "$1" "$2"
 }
 exit_script(){
     warn "退出脚本"
     exit 1
+}
+#查看状态
+sss1=$normal
+sss2="Changes to be committed"
+function check_status(){
+    info "开始验证提交状态"
+    sss=$(git "status")
+    if [[ $sss =~ $sss1 ]]; then
+        echo "当前状态无可提交数据"
+    else
+        echo "当前有可提交状态数据，请重试"
+        exit_script
+    fi
 }
 normal="nothing to commit, working tree clean"
 info '执行 pull'
@@ -58,19 +85,7 @@ elif [[ $ccc =~ $ccc3 ]];then
 else
     echo "commit成功 "
 fi
-#查看状态
-sss1=$normal
-sss2="Changes to be committed"
-function check_status(){
-    info "开始验证提交状态"
-    sss=$(git "status")
-    if [[ $sss =~ $sss1 ]]; then
-        echo "当前状态无可提交数据"
-    else
-        echo "当前有可提交状态数据，请重试"
-        #exit_script
-    fi
-}
+
 #push代码
 warn "执行 push"
 git push
