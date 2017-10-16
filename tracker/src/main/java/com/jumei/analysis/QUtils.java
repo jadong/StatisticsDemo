@@ -1,5 +1,7 @@
 package com.jumei.analysis;
 
+import android.view.View;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -146,6 +148,31 @@ public class QUtils {
             }
         }
         return temp;
+    }
+
+
+    public static String getEventId(View view){
+        Map tagParams = getTagParams(view);
+        if (tagParams != null) {
+            return String.valueOf(tagParams.get(Content.EVENT_ID));
+        }
+        return "";
+    }
+    public static Object getObject(View view){
+        if (view == null){
+            return null;
+        }
+        return view.getTag(Content.object_id);
+    }
+    public static Map<String,String> getTagParams(View view){
+        if (view == null){
+            return null;
+        }
+        Object tag = view.getTag(Content.tag_id);
+        if (tag == null){
+            return null;
+        }
+        return (Map<String,String>) tag;
     }
 
 

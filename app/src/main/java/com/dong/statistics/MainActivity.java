@@ -32,6 +32,8 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getIntent().putExtra("intent_test","intent测试数据");
+        getIntent().putExtra("intent_test555555555555555555555555","intent测试数据");
 
         btn_go = (Button) findViewById(R.id.btn_go);
         btn_jump = (Button) findViewById(R.id.btn_jump);
@@ -76,4 +78,10 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Tracker.onActivityAttached(this);
+
+    }
 }

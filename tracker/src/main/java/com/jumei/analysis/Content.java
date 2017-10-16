@@ -11,6 +11,8 @@ public class Content {
     public static String EVENT_DATA = "event_data";
     public static String ATTACHED_PAGE = "attached_page";
     public static String ATTACHED_SCHEME = "attached_scheme";
+    public static String VIEW_MATERIAL = "view_material";
+    public static String CLICK_MATERIAL = "click_material";
 
     public static String MOBILE_TYPE = "mobile_type";
     public static String MOBILE_BRAND = "mobile_brand";

@@ -22,6 +22,7 @@ import java.util.Set;
  */
 public class ArgCompat {
     private Map<String,String> baseArgs;
+    private Map<String,String> pageArgs;
     private Map<String,String> schemeArgs;
 
     public ArgCompat() {}
@@ -45,7 +46,9 @@ public class ArgCompat {
         this.baseArgs.put(Content.OS,"Android");
     }
 
-    public void setPageArgs(){}
+    public void setPageArgs(Map<String, String> pageArgs){
+        this.pageArgs = pageArgs;
+    }
 
     /**
      * 绑定页面时调用
@@ -55,21 +58,26 @@ public class ArgCompat {
             return;
         }
         String simpleName = context.getClass().getSimpleName();
-        if (baseArgs == null) {
-            baseArgs = new HashMap<>();
+        if (pageArgs == null) {
+            pageArgs = new HashMap<>();
         }
-        baseArgs.put(Content.ATTACHED_PAGE,simpleName);
+        pageArgs.put(Content.ATTACHED_PAGE,simpleName);
         if (context instanceof Activity){
             Intent intent = ((Activity) context).getIntent();
             if (intent != null) {
                 Bundle extras = intent.getExtras();
                 if (extras != null){
-                    Object scheme = extras.get("scheme");
-                    if (scheme != null && scheme instanceof String){
-                        setSchemeArgs(String.valueOf(scheme));
+                    Set<String> keys = extras.keySet();
+                    for (String key : keys) {
+                        Object value = extras.get(key);
+                        if (QUtils.stringEquals(key,"scheme")){
+                            if (value != null){
+                                setSchemeArgs(String.valueOf(value));
+                            }
+                        }else {
+                            pageArgs.put(key,String.valueOf(value));
+                        }
                     }
-                    //TODO 根据配置文件读取页面数据
-
                 }
             }
         }
@@ -88,6 +96,12 @@ public class ArgCompat {
         if (tagParams != null){
             params.putAll(tagParams);
         }
+        if (pageArgs != null){
+            params.putAll(pageArgs);
+        }
+        if (schemeArgs != null){
+            params.putAll(schemeArgs);
+        }
         params.put(Content.EVENT_CLASS_NAME,eventClassName);
         if (!QUtils.stringIsEmpty(eventId)){
             params.put(Content.EVENT_ID,eventId);
@@ -97,14 +111,6 @@ public class ArgCompat {
         if (o != null){
             if (o instanceof JSONObject){
                 JSONObject o1 = (JSONObject) o;
-
-                if (schemeArgs !=null && !schemeArgs.isEmpty()){
-                    Set<String> keys = schemeArgs.keySet();
-                    for (String key : keys) {
-                        String value = schemeArgs.get(key);
-                        params.put(key,value);
-                    }
-                }
                 //解析 json中的所有 基础数据的key
                 Map<String, String> map = parseJsonObject(o1);
                 params.putAll(map);

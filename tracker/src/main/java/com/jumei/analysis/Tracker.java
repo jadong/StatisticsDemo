@@ -70,20 +70,9 @@ public class Tracker {
     }
 
     public static void onCTRClick(View view,String className,Object object) {
-        TrackerLogger.getLogger().i("Tracker", "Tracker#onClick()");
+        TrackerLogger.getLogger().i("Tracker", "Tracker#onCTRClick()");
         if (tracker != null) {
-            String event_id = "click_material";
-            Map map = null;
-            if (view != null){
-                Object tag = view.getTag(Content.tag_id);
-                if (tag != null){
-                    map = (Map) tag;
-                }
-                if (object == null){
-                    object = view.getTag(Content.object_id);
-                }
-            }
-            tracker.go(event_id, className,map, object);
+            tracker.onCTR(Content.VIEW_MATERIAL,view,className,object);
         } else {
             throw new IllegalArgumentException("the tracker need to invoking " +
                     "init(Content) method , place check it!");
@@ -91,8 +80,28 @@ public class Tracker {
     }
 
     public static void onCTRView(View view,String className,Object object) {
-        TrackerLogger.getLogger().i("Tracker", "Tracker#onView()");
+        TrackerLogger.getLogger().i("Tracker", "Tracker#onCTRView()");
+        if (tracker != null) {
+            tracker.onCTR(Content.VIEW_MATERIAL,view,className,object);
+        } else {
+            throw new IllegalArgumentException("the tracker need to invoking " +
+                    "init(Content) method , place check it!");
+        }
 
+    }
+
+    private void onCTR(String event_id,View view,String className,Object object){
+        Map map = null;
+        if (view != null){
+            Object tag = view.getTag(Content.tag_id);
+            if (tag != null){
+                map = (Map) tag;
+            }
+            if (object == null){
+                object = view.getTag(Content.object_id);
+            }
+        }
+        tracker.go(event_id, className,map, object);
     }
 
     /**
@@ -101,8 +110,7 @@ public class Tracker {
      * @param context 上下文对象
      */
     public static void onActivityAttached(Context context) {
-
-        TrackerLogger.getLogger().i("Tracker", "Tracker#onAttached()");
+        TrackerLogger.getLogger().i("Tracker", "Tracker#onActivityAttached()");
         if (tracker != null && tracker.argCompat != null) {
             tracker.argCompat.onAttached(context);
         } else {
@@ -111,9 +119,36 @@ public class Tracker {
         }
     }
 
-    public static void onFragmentAttached(Fragment fragment){}
+    public static void onFragmentAttached(Fragment fragment){
+        TrackerLogger.getLogger().i("Tracker", "Tracker#onFragmentAttached()");
+        if (tracker != null && tracker.argCompat != null) {
+            View view = fragment.getView();
+            String simpleName = fragment.getClass().getSimpleName();
+            tracker.onFragmentAttached(view,simpleName);
+        } else {
+            throw new IllegalArgumentException("the tracker need to invoking " +
+                    "init(Content) method , place check it!");
+        }
+    }
 
-    public static void onFragmentAttached(android.app.Fragment fragment){}
+    public static void onFragmentAttached(android.app.Fragment fragment){
+        TrackerLogger.getLogger().i("Tracker", "Tracker#onFragmentAttached()");
+        if (tracker != null && tracker.argCompat != null) {
+            View view = fragment.getView();
+            String simpleName = fragment.getClass().getSimpleName();
+            tracker.onFragmentAttached(view,simpleName);
+        } else {
+            throw new IllegalArgumentException("the tracker need to invoking " +
+                    "init(Content) method , place check it!");
+        }
+    }
+
+    private void onFragmentAttached(View view,String className){
+        String eventId = QUtils.getEventId(view);
+        Map<String,String> tagParams = QUtils.getTagParams(view);
+        Object object = QUtils.getObject(view);
+        tracker.go(eventId,className,tagParams,object);
+    }
 
     /**
      * class被创建时调用的
@@ -131,8 +166,6 @@ public class Tracker {
     public static void onTrack(View view, String className, Object object){}
 
     public static void onTrack(String eventId,String className, Object object){}
-
-
 
     /**
      * 为view添加tag参数值
@@ -173,11 +206,9 @@ public class Tracker {
     }
 
 
-
-
     //动作开启
     private void go(String eventId, String className,Map<String,String> tagParams ,Object object) {
-        TrackerLogger.getLogger().i("Tracker", "Tracker#onTrack()");
+        TrackerLogger.getLogger().i("Tracker", "Tracker#go()");
         if (argCompat != null && sender != null) {
             Map<String, String> convert = argCompat.convert(eventId, className, tagParams,object);
             sender.send(convert);
