@@ -56,7 +56,7 @@ info '执行 pull'
 aaa=$(git "pull")
 bbb1="Already up-to-date."
 bbb2="Unpacking objects: 100%"
-echo -e "$aaa"
+message "$aaa" "e"
 if  [[ $aaa =~ $bbb1 ]];then
     message "拉取代码成功" 'e'
 elif [[ $aaa =~ $bbb2 ]];then
@@ -83,13 +83,13 @@ elif [[ $ccc =~ $ccc3 ]];then
     echo "当前没有可提交的信息"
     exit_script
 else
-    echo "commit成功 "
+    tip "commit成功 " 'e'
 fi
 
 #push代码
-warn "执行 push"
+info "执行 push"
 git push
-echo "-----代码推送完成-----"
+tip "代码推送完成"
 check_status
 
 
