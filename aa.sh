@@ -10,13 +10,13 @@ log(){
 #        echo  "$l1"
         echo  "\033[32m$l2$2$l2\033[0m"
 #        echo  "$l1"
-    elif [ $1='w' ];then
+    elif [ $1 = 'w' ];then
 #        echo  "\033[31m$l1\033[0m"
         echo  "\033[31m$l2$2$l2\033[0m"
 #        echo  "\033[31m$l1\033[0m"
-    elif [ $1='m' ];then
+    elif [ $1 = 'm' ];then
         echo  "$l2$2$l2"
-    elif [];then
+    elif [ $1 = 't' ];then
         echo  "\033[34m$l2$2$l2\033[0m"
 
     fi
