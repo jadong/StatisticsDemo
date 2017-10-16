@@ -45,12 +45,13 @@ check_status(){
         return 1
     else
         echo "当前有可提交状态数据，请重试"
-        exit_script
+        #exit_script
         return 2
     fi
 }
 
 #push代码
+echo "--------执行 push --------"
 git push
 check_status
 
