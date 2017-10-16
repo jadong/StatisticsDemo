@@ -4,6 +4,9 @@ exit_script(){
     echo "退出j脚本"
     exit 1
 }
+normal="nothing to commit, working tree clean"
+echo "--------执行 pull--------"
+
 aaa=$(git "pull")
 #aaa="Unpacking objects: 100%"
 bbb1="Already up-to-date."
@@ -15,16 +18,39 @@ else
     echo "拉取代码成功失败"
     exit_script
 fi
+#添加修改的文件
+echo "--------执行 add . 添加更改文件--------"
 git add .
+
+echo "--------执行 commit--------"
 commitTime=$(date "+%F..%H:%M:%S")
-ccc=$(git "commit -m 'commit change  time==>>$commitTime'")
+ccc=$(git commit -m "commit change  time==>>$commitTime")
 ccc2="no changes added to commit"
-ccc3="nothing to commit, working tree clean"
+ccc3=$normal
 if [[ $ccc =~ $ccc2 ]];then
     echo "提交代码不成功，请稍后重试"
+    exit_script
 elif [[ $ccc =~ $ccc3 ]];then
     echo "当前没有可提交的信息"
+    exit_script
 fi
+#查看状态
+sss1=$normal
+sss2="Changes to be committed"
+check_status(){
+    echo "--------开始验证提交状态--------"
+    sss=$(git "status")
+    if [[ $sss =~ $sss1 ]]; then
+        echo "当前状态无可提交数据"
+        return 1
+    else
+        echo "当前有可提交状态数据，请重试"
+        exit_script
+        return 2
+    fi
+}
 
-
+#push代码
+git push
+check_status
 
