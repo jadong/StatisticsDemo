@@ -51,7 +51,8 @@ public class MainActivity extends BaseActivity {
                 System.out.println("点击btn_go-----");
 
                 Tracker.appendParam(btn_go,"en","0x4433234");
-                Tracker.onCTRClick("",new User("小明",18));
+//                Tracker.onCTRClick("",new User("小明",18));
+//                Tracker.onClick(null,"",null);
 
 
             }
@@ -65,6 +66,8 @@ public class MainActivity extends BaseActivity {
                 System.out.println("btn_jump-----");
             }
         });
+
+//        Tracker.onActivityAttached(this);
     }
 
     @PointParams(eventId = "BBBB", paramsName = "params22")

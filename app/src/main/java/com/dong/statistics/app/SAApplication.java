@@ -2,7 +2,6 @@ package com.dong.statistics.app;
 
 import android.app.Application;
 
-import com.jumei.analysis.BuildConfig;
 import com.jumei.analysis.Tracker;
 
 import java.util.HashMap;
@@ -21,7 +20,8 @@ public class SAApplication extends Application {
         baseArgus.put("argu1","123");
         baseArgus.put("argu2","123");
         baseArgus.put("argu3","123");
-        Tracker.init(this.getApplicationContext()).setBaseArgs(baseArgus);
+        Tracker.init(this.getApplicationContext());
+        Tracker.baseArgs(baseArgus);
 
     }
 }

@@ -19,4 +19,7 @@ public class Content {
     public static String MOBILE_NUMBER = "mobile_number";
     public static String MOBILE_ISROOT = "mobile_isroot";
     public static String OS_VERSION = "os_version";
+
+
+    public static final int tag_id=0xff100000;
 }

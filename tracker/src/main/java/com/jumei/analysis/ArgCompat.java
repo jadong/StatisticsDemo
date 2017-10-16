@@ -85,7 +85,6 @@ public class ArgCompat {
         if (o != null){
             if (o instanceof JSONObject){
                 JSONObject o1 = (JSONObject) o;
-                TrackerLogger.getLogger().i("convert","BeanToJson",o1);
                 o1.put(Content.EVENT_CLASS_NAME,eventClassName);
                 o1.put(Content.EVENT_ID,eventId);
 
@@ -102,8 +101,17 @@ public class ArgCompat {
                         }
                     }
                 }
+                Set<String> jsonKeys = o1.keySet();
+                for (String jsonKey : jsonKeys) {
+                    TrackerLogger.getLogger().i("ArgCompat  jsonKey",jsonKey);
+                    Object o2 = o1.get(jsonKey);
+                    if (o2 instanceof JSONObject){
+                        TrackerLogger.getLogger().i("ArgCompat  jsonKey",jsonKey+" is a object");
+                    }
+                }
+
                 params.put(Content.EVENT_DATA,o1.toJSONString());
-                TrackerLogger.getLogger().i("ArgCompat  JSONObject",o);
+//                TrackerLogger.getLogger().i("ArgCompat  JSONObject",o);
             }else if (o instanceof JSONArray){
                 TrackerLogger.getLogger().i("ArgCompat  JSONArray 目前不想支持直接传List",o);
             }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -45,12 +46,17 @@ public class Tracker {
      *
      * @param baseArgus 基础数据参数
      */
-    public void setBaseArgs(Map<String, String> baseArgus) {
+    public static void baseArgs(Map<String, String> baseArgus) {
         TrackerLogger.getLogger().i("Tracker", "Tracker#setBaseArgus()");
-        if (argCompat != null) {
-            argCompat.setBaseArgs(baseArgus);
+        if (tracker != null) {
+            if (tracker.argCompat != null) {
+                tracker.argCompat.setBaseArgs(baseArgus);
+            } else {
+                tracker.argCompat = new ArgCompat(baseArgus);
+            }
         } else {
-            argCompat = new ArgCompat(baseArgus);
+            throw new IllegalArgumentException("the tracker need to invoking " +
+                    "init(Content) method , place check it!");
         }
     }
 
@@ -116,73 +122,29 @@ public class Tracker {
 
 
     /**
-     * 有参数埋点调用
-     *
-     * @param eventId
-     * @param className
-     * @param object
-     */
-    public void onTrack(String eventId, String className, Object object) {
-        TrackerLogger.getLogger().i("Tracker", "Tracker#onTrack()");
-        if (argCompat != null && sender != null) {
-            Map<String, String> convert = argCompat.convert(eventId, className, object);
-            sender.send(convert);
-        }
-    }
-
-    /**
      * 为view添加tag参数值
      * @param view
      * @param key
      * @param value
      */
-    public static void appendParam(View view, String key, Object value) {
-        TrackerLogger.getLogger().i("appendParams",key+"="+value);
-        Object tag = view.getTag();
-        String values = "";
-        if (tag != null) {
-            values = String.valueOf(tag);
-        }TrackerLogger.getLogger().i("values","values =>> "+values);
-        String var1 = key + "=" + value;
-        String var2 = "|" + var1;
-        String var3 = var1 + "|";
-        if (QUtils.oneIn(values,var1,var2,var3)){
-            TrackerLogger.getLogger().i("appendParams","  包含以下值",key+"="+value);
+    @SuppressWarnings("unchecked")
+    public static void appendParam(View view, String key, String value) {
+//        TrackerLogger.getLogger().i("appendParams",key+"="+value);
+        if (view == null
+                || (QUtils.stringIsEmpty(key) && QUtils.stringIsEmpty(value))){
             return;
         }
-        if (values.contains("|")){
-            String[] split = values.split("\\|");
-            for (int i = 0; i < split.length; i++) {
-                String s = split[i];
-                if (s.contains(key)){
 
-                }else {
-
-                }
-                if (s.contains("=")){
-                    String[] split1 = s.split("=");
-                    if (QUtils.stringEquals(split1[0],key)){
-
-                    }
-
-                    if (i==0){
-
-                    }else {
-
-                    }
-                }
-
-
-
-            }
+        Object tag = view.getTag(Content.tag_id);
+        Map<String,String> values;
+        if (tag != null && tag instanceof Map) {
+            values = (Map) tag;
+            TrackerLogger.getLogger().i("appendParam","已有数据",values);
         }else {
-            if (QUtils.stringIsEmpty(values)){
-                values = var1;
-            }else {
-                values += var2;
-            }
+            values = new HashMap<>();
         }
-        view.setTag(values);
+        values.put(key,value);
+        view.setTag(Content.tag_id,values);
     }
 
     /**
@@ -191,6 +153,18 @@ public class Tracker {
      * @param object
      */
     public static void appendObject(View view,Object object){}
+
+
+
+
+    //动作开启
+    private void onTrack(String eventId, String className, Object object) {
+        TrackerLogger.getLogger().i("Tracker", "Tracker#onTrack()");
+        if (argCompat != null && sender != null) {
+            Map<String, String> convert = argCompat.convert(eventId, className, object);
+            sender.send(convert);
+        }
+    }
 
 
 }
