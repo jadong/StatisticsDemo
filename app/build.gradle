@@ -10,7 +10,7 @@ android {
 
 dependencies {
     compile project(':tracker')
-    compile project(':tracker-annotation')
-    //compile 'com.jumei.tracker:tracker-annotation:1.0.0'
+//    compile project(':tracker-annotation')
+    compile 'com.jumei.tracker:tracker-annotation:1.0.0'
 
 }

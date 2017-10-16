@@ -45,7 +45,6 @@ public class MainActivity extends BaseActivity {
         btn_go.setTag("en=aaa|b=45667");
         btn_go.setOnClickListener(new View.OnClickListener() {
 
-            @PointParams(eventId = "AAAA", paramsName = "params")
             @Override
             public void onClick(View v) {
                 System.out.println("点击btn_go-----");
@@ -60,24 +59,20 @@ public class MainActivity extends BaseActivity {
 
         btn_jump.setOnClickListener(new View.OnClickListener() {
 
-            @PointParams(eventId = "DDDD", paramsName = "params")
             @Override
             public void onClick(View v) {
                 System.out.println("btn_jump-----");
             }
         });
 
-//        Tracker.onActivityAttached(this);
     }
 
-    @PointParams(eventId = "BBBB", paramsName = "params22")
     public void initData(int count) {
         for (int i = 0; i < count; i++) {
             list.add("--" + i);
         }
     }
 
-    @PointParams(eventId = "FFFFF", paramsName = "params33")
     @ExecuteTime
     public void initData2(int count) {
         for (int i = 0; i < count; i++) {
