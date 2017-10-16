@@ -58,12 +58,12 @@ bbb1="Already up-to-date."
 bbb2="Unpacking objects: 100%"
 message "$aaa" "e"
 if  [[ $aaa =~ $bbb1 ]];then
-    message "拉取代码成功" 'e'
+    tip "拉取代码成功" 'e'
 elif [[ $aaa =~ $bbb2 ]];then
-    message "当前代码为最新状态，无需更新" "e"
+    tip "当前代码为最新状态，无需更新" "e"
     exit_script
 else
-    echo "拉取代码成功失败"
+    warn "拉取代码成功失败" "e"
     exit_script
 fi
 #添加修改的文件
@@ -77,10 +77,10 @@ ccc2="no changes added to commit"
 ccc3=$normal
 echo $ccc
 if [[ $ccc =~ $ccc2 ]];then
-    echo "提交代码不成功，请稍后重试"
+    tip "提交代码不成功，请稍后重试" "e"
     exit_script
 elif [[ $ccc =~ $ccc3 ]];then
-    echo "当前没有可提交的信息"
+    tip "当前没有可提交的信息" "e"
     exit_script
 else
     tip "commit成功 " 'e'
