@@ -64,13 +64,12 @@ public class Tracker {
      * 普通点击 数据
      *
      * @param view
-     * @param object 数据类
      */
     public static void onClick(View view, String className) {
 
     }
 
-    public static void onCTRClick(View view,String className) {
+    public static void onCTRClick(View view,String className,Object object) {
         TrackerLogger.getLogger().i("Tracker", "Tracker#onClick()");
         if (tracker != null) {
             tracker.onTrack("", className, null);
@@ -80,7 +79,7 @@ public class Tracker {
         }
     }
 
-    public static void onCTRView(View view,String className) {
+    public static void onCTRView(View view,String className,Object object) {
         TrackerLogger.getLogger().i("Tracker", "Tracker#onView()");
 
     }
