@@ -15,5 +15,9 @@ else
     echo "拉取代码成功失败"
     exit_script
 fi
+git add .
+commitTime=$(date "+%F..%H:%M:%S")
+git commit -m "commit change  time==>>$commitTime"
+
 
 
