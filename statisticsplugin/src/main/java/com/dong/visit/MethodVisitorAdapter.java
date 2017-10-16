@@ -26,7 +26,7 @@ public class MethodVisitorAdapter extends AdviceAdapter {
     private boolean isExecuteTime = false;
     private String methodName;
     private ClassDescEntity classDescEntity;
-    private AnnotationParams annotationParams = new AnnotationParams();
+    private AnnotationParams annotationParams;
 
     protected MethodVisitorAdapter(ClassDescEntity classDescEntity, MethodVisitor methodVisitor, int access, String name, String desc) {
         super(Opcodes.ASM5, methodVisitor, access, name, desc);
@@ -58,11 +58,13 @@ public class MethodVisitorAdapter extends AdviceAdapter {
         if (Type.getDescriptor(ExecuteTime.class).equals(desc)) {
             isExecuteTime = true;
         } else if (Type.getDescriptor(CTRClick.class).equals(desc)) {
+            annotationParams = new AnnotationParams();
             annotationParams.setCTRClick(true);
             if (annotationVisitor != null) {
                 annotationVisitor = new AnnotationVisitorAdapter(annotationParams, annotationVisitor);
             }
         } else if (Type.getDescriptor(CTRView.class).equals(desc)) {
+            annotationParams = new AnnotationParams();
             annotationParams.setCTRView(true);
             if (annotationVisitor != null) {
                 annotationVisitor = new AnnotationVisitorAdapter(annotationParams, annotationVisitor);
@@ -102,9 +104,7 @@ public class MethodVisitorAdapter extends AdviceAdapter {
 
     private void handlerCTR() {
         if (annotationParams != null) {
-            LogUtils.println(TAG, "=====handlerCTRClick===annotationParams=" + annotationParams);
-
-
+            LogUtils.println(TAG, "=====handlerCTR====annotationParams===" + annotationParams);
             if (classDescEntity.getOuterClassRefName() != null) {//内部类中调用的字节码
 
                 //第一个参数名称默认为itemView
@@ -149,6 +149,7 @@ public class MethodVisitorAdapter extends AdviceAdapter {
                 mN = "onCTRView";//CTR浏览事件埋点
             }
             if (!mN.equals("")) {
+                LogUtils.println(TAG, "=====handlerCTR====" + mN);
                 mv.visitMethodInsn(INVOKESTATIC, "com/jumei/analysis/Tracker", mN, "(Landroid/view/View;Ljava/lang/String;Ljava/lang/Object;)V", false);
             }
         }

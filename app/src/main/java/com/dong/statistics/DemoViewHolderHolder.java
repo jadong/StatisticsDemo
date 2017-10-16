@@ -4,16 +4,18 @@ import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
 
-import com.dong.statistics.app.AppConstants;
-import com.jumei.tracker.annotation.PointParams;
+import com.jumei.tracker.annotation.CTRClick;
 
 /**
  * Created by dong on 2017/9/20.
  */
-public class DemoViewHolder extends BaseView {
+public class DemoViewHolderHolder extends BaseViewHolder {
+
+    public DemoViewHolderHolder(Context context) {
+        super(context);
+    }
 
     private void init(Context context) {
-        params.put("key", "value");
 
         TextView textView = new TextView(context);
         textView.setOnClickListener(new View.OnClickListener() {
@@ -39,6 +41,23 @@ public class DemoViewHolder extends BaseView {
             @Override
             public void run() {
                 System.out.println("thread run");
+            }
+        }).start();
+    }
+
+    @CTRClick("params")
+    public void onCTRClick(){
+        System.out.println("onCTRView");
+    }
+
+
+    public void onCTRView(){
+        new Thread(new Runnable() {
+
+            @CTRClick("viewParams")
+            @Override
+            public void run() {
+                System.out.println("onCTRView");
             }
         }).start();
     }
