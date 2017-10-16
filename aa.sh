@@ -50,15 +50,11 @@ function check_status(){
     sss=$(git "status")
     if [[ $sss =~ $sss1 ]]; then
         echo "当前状态无可提交数据"
-
     else
         echo "当前有可提交状态数据，请重试"
         #exit_script
-
     fi
-    return 100
 }
-
 #push代码
 log "执行 push"
 git push
