@@ -51,7 +51,7 @@ function check_status(){
     fi
 }
 normal="nothing to commit, working tree clean"
-info '执行 pull' e
+info '执行 pull'e
 
 aaa=$(git "pull")
 bbb1="Already up-to-date."
