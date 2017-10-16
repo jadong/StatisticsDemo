@@ -7,7 +7,6 @@ log(){
         echo  "$l1"
         echo  "$l2$2$l2"
         echo  "$l1"
-        pass
     elif [ $1='w' ];then
         echo  "\033[31m$l1\033[0m"
         echo  "\033[31m$l2$2$l2\033[0m"
