@@ -55,5 +55,5 @@ check_status(){
 #push代码
 echo "--------执行 push --------"
 git push
-check_status
+#check_status
 
