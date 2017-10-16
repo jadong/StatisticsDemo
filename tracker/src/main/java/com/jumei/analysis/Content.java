@@ -22,4 +22,5 @@ public class Content {
 
 
     public static final int tag_id=0xff100000;
+    public static final int object_id=0xff100001;
 }

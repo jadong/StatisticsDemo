@@ -66,21 +66,21 @@ public class Tracker {
      * @param view
      * @param object 数据类
      */
-    public static void onClick(View view, String actionClassName, Object object) {
+    public static void onClick(View view, String className) {
 
     }
 
-    public static void onCTRClick(String className, Object object) {
+    public static void onCTRClick(View view,String className) {
         TrackerLogger.getLogger().i("Tracker", "Tracker#onClick()");
         if (tracker != null) {
-            tracker.onTrack("", className, object);
+            tracker.onTrack("", className, null);
         } else {
             throw new IllegalArgumentException("the tracker need to invoking " +
                     "init(Content) method , place check it!");
         }
     }
 
-    public static void onCTRView(String className, Object object) {
+    public static void onCTRView(View view,String className) {
         TrackerLogger.getLogger().i("Tracker", "Tracker#onView()");
 
     }
@@ -106,11 +106,11 @@ public class Tracker {
     public static void onFragmentAttached(android.app.Fragment fragment){}
 
     /**
-     * 需要在创建时调用的
+     * class被创建时调用的
      *
      * @param object 数据
      */
-    public static void onObjectCreate(String className,Object object) {
+    public static void onClassCreate(String className,Object object) {
 
     }
 
@@ -152,7 +152,7 @@ public class Tracker {
      * @param view
      * @param object
      */
-    public static void appendObject(View view,Object object){}
+    public static void appendParam(View view,Object object){}
 
 
 
