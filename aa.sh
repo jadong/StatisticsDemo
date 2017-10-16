@@ -33,6 +33,8 @@ if [[ $ccc =~ $ccc2 ]];then
 elif [[ $ccc =~ $ccc3 ]];then
     echo "当前没有可提交的信息"
     exit_script
+else
+    echo "commit 无回馈信息"
 fi
 #查看状态
 sss1=$normal
