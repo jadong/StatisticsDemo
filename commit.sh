@@ -6,7 +6,7 @@ echo "--------开始执行 add .---------"
 git add .
 echo "--------开始执行 commit---------"
 commitTime= date +%F..%H:%M:%S
-git commit -m 'commit change ${commitTime}'
+git commit -m 'commit change '${commitTime}
 git status
 echo "--------开始执行 push---------"
 #git push
