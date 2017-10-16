@@ -45,11 +45,11 @@ check_status(){
     sss=$(git "status")
     if [[ $sss =~ $sss1 ]]; then
         echo "当前状态无可提交数据"
-        return 1
+
     else
         echo "当前有可提交状态数据，请重试"
         #exit_script
-        return 2
+
     fi
 }
 
