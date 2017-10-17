@@ -6,6 +6,7 @@ import android.view.View;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by kayo on 17/9/18.
@@ -66,6 +67,13 @@ public class Tracker {
      * @param view
      */
     public static void onClick(View view, String className) {
+        TrackerLogger.getLogger().i("Tracker", "Tracker#onClick()");
+        if (tracker != null) {
+            tracker.parseView(view,className,null);
+        } else {
+            throw new IllegalArgumentException("the tracker need to invoking " +
+                    "init(Content) method , place check it!");
+        }
 
     }
 
@@ -163,9 +171,38 @@ public class Tracker {
      * 埋点调用
      * @param view
      */
-    public static void onTrack(View view, String className, Object object){}
+    public static void onTrack(View view, String className, Object object){
+        TrackerLogger.getLogger().i("Tracker", "Tracker#onTrack()  with view");
+        if (tracker != null) {
+            tracker.parseView(view, className, object);
+        } else {
+            throw new IllegalArgumentException("the tracker need to invoking " +
+                    "init(Content) method , place check it!");
+        }
+    }
 
-    public static void onTrack(String eventId,String className, Object object){}
+    public static void onTrack(String eventId,String className, Object object){
+        TrackerLogger.getLogger().i("Tracker", "Tracker#onTrack()  without view");
+        if (tracker != null) {
+            if (object instanceof Map){
+                Map<String,String> temp = new HashMap<>();
+                Map a = (Map) object;
+                Set set = a.keySet();
+                if (set != null) {
+                    for (Object o : set) {
+                        Object o1 = a.get(o);
+                        temp.put(String.valueOf(o),String.valueOf(o1));
+                    }
+                    tracker.go(eventId,className,temp,null);
+                }
+            }else {
+                tracker.go(eventId,className,null,object);
+            }
+        } else {
+            throw new IllegalArgumentException("the tracker need to invoking " +
+                    "init(Content) method , place check it!");
+        }
+    }
 
     /**
      * 为view添加tag参数值
@@ -203,6 +240,23 @@ public class Tracker {
         if (view != null){
             view.setTag(Content.object_id,object);
         }
+    }
+
+
+    //解析view数据
+    private void parseView(View view,String className,Object object){
+        Map map = null;
+        if (view != null){
+            Object tag = view.getTag(Content.tag_id);
+            if (tag != null){
+                map = (Map) tag;
+            }
+            if (object == null) {
+                object = view.getTag(Content.object_id);
+            }
+
+        }
+        tracker.go("", className,map, object);
     }
 
 
