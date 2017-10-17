@@ -81,7 +81,7 @@ msg1="commit change  time==>>$commitTime"
 if [[ $msg = '' ]];then
     msg=$msg1
 fi
-ccc=$(git commit -m "$msg1")
+ccc=$(git commit -m "$msg")
 ccc2="no changes added to commit"
 ccc3=$normal
 echo $ccc
