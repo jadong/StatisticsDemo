@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
 apply from:"${GRADLE.BASE}"
-//apply plugin: 'statisticsplugin'
+apply plugin: 'statisticsplugin'
 
 android {
     defaultConfig {
