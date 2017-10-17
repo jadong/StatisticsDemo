@@ -1,5 +1,4 @@
 filePath=$0
-
 log(){
     l1="-----------------------------------"
     l2="-----"
@@ -51,6 +50,12 @@ function check_status(){
         exit_script
     fi
 }
+
+msg=""
+if [[ "$1" != '' ]];then
+    msg="$1"
+fi
+
 info '执行 pull'
 
 aaa=$(git "pull")
@@ -72,7 +77,11 @@ git add .
 
 info "执行 commit"
 commitTime=$(date "+%F..%H:%M:%S")
-ccc=$(git commit -m "commit change  time==>>$commitTime")
+msg1="commit change  time==>>$commitTime"
+if [[ $msg = '' ]];then
+    msg=$msg1
+fi
+ccc=$(git commit -m "$msg1")
 ccc2="no changes added to commit"
 ccc3=$normal
 echo $ccc
