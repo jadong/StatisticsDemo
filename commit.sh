@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 filePath=$0
 log(){
     l1="-----------------------------------"
