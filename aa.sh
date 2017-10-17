@@ -52,7 +52,7 @@ function check_status(){
 }
 
 msg=""
-if [[ "$1" != '' ]];then
+if [[ $1 != '' ]];then
     msg="$1"
 fi
 
